@@ -1,9 +1,15 @@
 Shortcodes
+
 Contribution Form
+
 [wpkcs_contribution_form]
+
 Contributor Profile
+
 [wpkcs_profile profile="username"]
+
 Display All Contributors
+
 [wpkcs_contributors]
 
 
