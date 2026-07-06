@@ -52,6 +52,39 @@ class WPKCS_WordPress_Org {
 			update_post_meta( $id, '_wpkcs_org_' . $key, $value );
 		}
 
+
+		$contributor = new WPKCS_Contributor( $id );
+
+		if ($avatar_url = $contributor->get_avatar()){
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+
+			// Download image to temporary location.
+			$tmp = download_url( "https:".$avatar_url );
+            
+
+			if (!is_wp_error( $tmp )) {
+				$file = array(
+					'name'     => rand(1111,9999)."_" . $contributor->get_username() . '.jpg',
+					'tmp_name' => $tmp,
+				);
+
+				// Upload to media library.
+				$attachment_id = media_handle_sideload( $file, $id );
+
+				// Remove temp file on failure.
+				if ( is_wp_error( $attachment_id ) ) {
+					@unlink( $tmp );
+					
+				} else {
+					// Set featured image.
+					set_post_thumbnail( $id, $attachment_id );
+				}
+			}
+		}
+		
+
 		return $body;
 	}
 }

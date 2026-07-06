@@ -15,6 +15,7 @@ class WPKCS_Loader {
 		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-admin.php';
 		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-wordpress-org.php';
 		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-mailer.php';
+		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-contributor.php';
 
 		new WPKCS_Post_Types();
 		new WPKCS_Assets();
