@@ -55,6 +55,11 @@ class WPKCS_Post_Types {
 					'name_admin_bar'        => 'Contributor',
 				),
 				'public'      => true,
+				'has_archive'  => true,
+				'rewrite'      => array(
+					'slug'       => 'contributors',
+					'with_front' => false,
+				),
 				'supports'    => array( 'title', 'editor', 'thumbnail' ),
 				'show_in_rest'=> true,
 			)
