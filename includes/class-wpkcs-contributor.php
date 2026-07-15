@@ -62,12 +62,12 @@ class WPKCS_Contributor {
 				);
 	}
 
-	public function get_avatar(){
+	public function get_avatar($size = 350){
 		$url = get_post_meta(
 					$this->post_id,
 					"_wpkcs_org_avatar_urls"
 				)[0][96] ?? '';
-		$url = $this->update_avatar_size( $url, $size = 350 );
+		$url = $this->update_avatar_size( $url, $size );
 		return $url;
 	}
 

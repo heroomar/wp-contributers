@@ -30,10 +30,10 @@ class WPKCS_Meta_Boxes {
 			array( $this, 'wpkcs_save_contribution_meta' )
 		);
 
-		add_action(
-			'save_post',
-			array( $this, 'wpkcs_save_contributor_meta' )
-		);
+		// add_action(
+		// 	'save_post',
+		// 	array( $this, 'wpkcs_save_contributor_meta' )
+		// );
 
 		/*
 		|--------------------------------------------------------------------------
@@ -83,14 +83,14 @@ class WPKCS_Meta_Boxes {
 			'default'
 		);
 
-		add_meta_box(
-			'wpkcs_contributor_details',
-			'Contributor Details',
-			array( $this, 'wpkcs_contributor_meta_box_callback' ),
-			'wpkcs_contributor',
-			'normal',
-			'default'
-		);
+		// add_meta_box(
+		// 	'wpkcs_contributor_details',
+		// 	'Contributor Details',
+		// 	array( $this, 'wpkcs_contributor_meta_box_callback' ),
+		// 	'wpkcs_contributor',
+		// 	'normal',
+		// 	'default'
+		// );
 	}
 
 	/*
@@ -129,9 +129,17 @@ class WPKCS_Meta_Boxes {
 			<tr>
 				<th>Contribution Type</th>
 				<td>
-					<input type="text" name="wpkcs_type"
-					value="<?php echo esc_attr( $type ); ?>"
-					class="regular-text">
+					<select name="wpkcs_type" class="regular-text" required>
+						<option  value="">Select Contribution Type</option>
+						<option <?php echo esc_attr( $type ) == "Photos Contribution" ? 'selected' : ''; ?> value="Photos Contribution">Photos Contribution</option>
+						<option <?php echo esc_attr( $type ) == "Translation" ? 'selected' : ''; ?> value="Translation">Translation</option>
+						<option <?php echo esc_attr( $type ) == "Support Forum" ? 'selected' : ''; ?> value="Support Forum">Support Forum</option>
+						<option <?php echo esc_attr( $type ) == "Meetup" ? 'selected' : ''; ?> value="Meetup">Meetup Participation</option>
+						<option <?php echo esc_attr( $type ) == "Documentation" ? 'selected' : ''; ?> value="Documentation">Documentation Contribution</option>
+						<option <?php echo esc_attr( $type ) == "Learn WordPress" ? 'selected' : ''; ?> value="Learn WordPress">Learn WordPress</option>
+						<option <?php echo esc_attr( $type ) == "Code Contribution" ? 'selected' : ''; ?> value="Code Contribution">Code Contribution</option>
+						<option <?php echo esc_attr( $type ) == "Other" ? 'selected' : ''; ?> value="Other">Other</option>
+					</select>
 				</td>
 			</tr>
 
@@ -175,6 +183,13 @@ class WPKCS_Meta_Boxes {
 					}
 					?>
 
+					 <br><br>
+
+					<input
+						type="file"
+						name="wpkcs_screenshot"
+						accept=".jpg,.jpeg,.png,.webp">
+
 				</td>
 			</tr>
 
@@ -196,27 +211,7 @@ class WPKCS_Meta_Boxes {
 			'wpkcs_contributor_nonce'
 		);
 
-		$username = get_post_meta(
-			$post->ID,
-			'_wpkcs_wporg_username',
-			true
-		);
-
-		$avatar = get_post_meta(
-			$post->ID,
-            "_wpkcs_org_avatar_urls"
-		)[0][96] ?? ''; 
-        // get_post_meta(
-		// 	$post->ID,
-		// 	'_wpkcs_avatar',
-		// 	true
-		// );
-
-		$bio = get_post_meta(
-			$post->ID,
-			'_wpkcs_bio',
-			true
-		);
+		$contributor = new WPKCS_Contributor( $post->ID );
 
 
         
@@ -230,7 +225,7 @@ class WPKCS_Meta_Boxes {
 				<td>
 					<input type="text"
 					name="wpkcs_wporg_username"
-					value="<?php echo esc_attr( $username ); ?>"
+					value="<?php echo esc_attr( $contributor->get_username() ); ?>"
 					class="regular-text">
 				</td>
 			</tr>
@@ -239,7 +234,7 @@ class WPKCS_Meta_Boxes {
 				<th>Avatar</th>
 				<td>
 
-					<?php if ( $avatar ) : ?>
+					<?php if ( $avatar = $contributor->get_avatar() ) : ?>
 
 						<img
 							src="<?php echo esc_url( $avatar ); ?>"
@@ -259,7 +254,7 @@ class WPKCS_Meta_Boxes {
 					<textarea
 						name="wpkcs_bio"
 						rows="6"
-						class="large-text"><?php echo esc_textarea( $bio ); ?></textarea>
+						class="large-text"><?php echo esc_textarea( $contributor->get_bio() ); ?></textarea>
 
 				</td>
 			</tr>
@@ -288,7 +283,7 @@ class WPKCS_Meta_Boxes {
 				'wpkcs_save_contribution_meta'
 			)
 		) {
-			return;
+			return; 
 		}
 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
@@ -297,6 +292,25 @@ class WPKCS_Meta_Boxes {
 
 		if ( 'wpkcs_contribution' !== get_post_type( $post_id ) ) {
 			return;
+		}
+
+		$username = $_POST['wpkcs_username'];
+		$type = $_POST['wpkcs_type'];
+		$link = $_POST['wpkcs_link'];
+		$time_spent = $_POST['wpkcs_time_spent'];
+		$date = $_POST['wpkcs_date'];
+
+		$wp_org_profile = WPKCS_WordPress_Org::wpkcs_fetch_profile( $username );
+
+		if ($wp_org_profile !== true && (!is_array($wp_org_profile) || !isset($wp_org_profile['name']))){
+			// Wordpress.org profile could not be found please check username.
+			wp_die(
+				'Wordpress.org profile could not be found please check username.',
+				'Validation Error',
+				array(
+					'back_link' => true,
+				)
+			);
 		}
 
 		update_post_meta(
@@ -338,6 +352,44 @@ class WPKCS_Meta_Boxes {
 				wp_unslash( $_POST['wpkcs_date'] ?? '' )
 			)
 		);
+
+		if ( ! empty( $_FILES['wpkcs_screenshot']['name'] ) ) {
+
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/media.php';
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+
+			$file_type = wp_check_filetype(
+				$_FILES['wpkcs_screenshot']['name']
+			);
+
+			$allowed_types = array(
+				'jpg',
+				'jpeg',
+				'png',
+				'webp',
+			);
+
+			if ( in_array( $file_type['ext'], $allowed_types, true ) ) {
+
+				$attachment_id = media_handle_upload(
+					'wpkcs_screenshot',
+					$post_id
+				);
+
+				if ( ! is_wp_error( $attachment_id ) ) {
+
+					update_post_meta(
+						$post_id,
+						'_wpkcs_screenshot',
+						$attachment_id
+					);
+				}
+			}
+		}
+
+
+
 	}
 
 	/*

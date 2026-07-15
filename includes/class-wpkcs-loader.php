@@ -16,11 +16,13 @@ class WPKCS_Loader {
 		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-wordpress-org.php';
 		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-mailer.php';
 		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-contributor.php';
+		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-filters.php';
 
 		new WPKCS_Post_Types();
 		new WPKCS_Assets();
 		new WPKCS_Shortcodes();
 		new WPKCS_Form_Handler();
 		new WPKCS_Admin();
+		new WPKCS_Filters();
 	}
 }

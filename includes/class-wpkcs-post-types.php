@@ -8,6 +8,9 @@ class WPKCS_Post_Types {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'wpkcs_register_post_types' ) );
+		add_action( 'post_edit_form_tag', function () {
+			echo ' enctype="multipart/form-data"';
+		} );
 	}
 
 	public function wpkcs_register_post_types() {
