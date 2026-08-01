@@ -48,6 +48,17 @@ class WPKCS_WordPress_Org {
 			)
 		);
 
+		$raw_profile = wp_remote_get(
+			'https://profiles.wordpress.org/' . $username
+		);
+
+		$raw_profile = explode("<h3>Bio</h3>",wp_remote_retrieve_body($raw_profile));
+
+		if (isset($raw_profile[1])){
+			$bio = explode("</div>",$raw_profile[1])[0];
+			$body['bio'] = strip_tags($bio);
+		}
+
 		foreach ($body as $key => $value) {
 			update_post_meta( $id, '_wpkcs_org_' . $key, $value );
 		}

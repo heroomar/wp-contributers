@@ -319,3 +319,199 @@
 	background: #135e96;
 	color: #fff;
 }
+
+.contributor-profile {
+	max-width: 900px;
+	margin: 40px auto;
+	font-family: Arial, sans-serif;
+}
+
+.contributor-top {
+	display: flex;
+	gap: 25px;
+	margin-bottom: 25px;
+}
+
+.contributor-image {
+	width: 180px;
+}
+
+.profile-img {
+	width: 180px;
+	height: 270px;
+	object-fit: cover;
+}
+
+.contributor-info {
+	flex: 1;
+}
+
+.contributor-info h2 {
+	font-size: 22px;
+}
+
+.bio {
+	font-size: 14px;
+	line-height: 1.7;
+}
+
+.profile-btn {
+	display: inline-block;
+	background: #00a32a;
+	color: #fff;
+	padding: 8px 15px;
+	margin-top: 20px;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+
+.social-icons {
+	margin-top: 20px;
+}
+
+.social-icons span {
+	border: 1px solid #ddd;
+	padding: 5px 8px;
+	margin-right: 5px;
+}
+
+
+.contributor-tabs ul {
+
+	display: flex;
+	justify-content: center;
+	gap: 25px;
+	list-style: none;
+
+	padding: 15px 0;
+
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+
+}
+
+
+.contributor-tabs a {
+
+	color: #555;
+	text-decoration: none;
+	font-size: 12px;
+
+}
+
+
+.contributor-tabs .active a {
+
+	color: #00a32a;
+	font-weight: bold;
+
+}
+
+
+.contribution-item {
+
+	padding: 20px 0;
+	border-bottom: 1px solid #eee;
+
+}
+
+
+.contribution-item h3 {
+
+	font-size: 18px;
+
+}
+
+.photo-contribution {
+	display: inline-flex;
+    height: 200px;
+    width: 200px;
+    border: 1px solid darkgrey;
+	border-radius: 7px;
+    overflow: hidden;
+}
+
+
+
+.contribution-meta {
+
+	margin-top: 10px;
+	font-size: 12px;
+	color: #777;
+
+}
+
+
+.contribution-meta span {
+
+	margin-right: 15px;
+
+}
+.social-icons {
+	margin-top:25px;
+	display:flex;
+	gap:8px;
+}
+
+
+.share-icon {
+
+	width:34px;
+	height:34px;
+
+	border:1px solid #ddd;
+	border-radius:50%;
+
+	display:flex;
+	align-items:center;
+	justify-content:center;
+
+	text-decoration:none;
+
+	color:#555;
+
+	font-size:14px;
+
+	transition:all .3s ease;
+
+}
+
+
+.share-icon:hover {
+
+	background:#00a32a;
+	border-color:#00a32a;
+	color:#fff;
+
+}
+
+
+.facebook:hover {
+	background:#1877f2;
+	border-color:#1877f2;
+}
+
+
+.twitter:hover {
+	background:#000;
+	border-color:#000;
+}
+
+
+.linkedin:hover {
+	background:#0a66c2;
+	border-color:#0a66c2;
+}
+
+
+.pinterest:hover {
+	background:#e60023;
+	border-color:#e60023;
+}
+
+
+.telegram:hover {
+	background:#229ed9;
+	border-color:#229ed9;
+}

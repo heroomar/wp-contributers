@@ -18,192 +18,6 @@ while (have_posts()):
 
     ?>
 
-    <style>
-        .contributor-profile {
-            max-width: 900px;
-            margin: 40px auto;
-            font-family: Arial, sans-serif;
-        }
-
-        .contributor-top {
-            display: flex;
-            gap: 25px;
-        }
-
-        .contributor-image {
-            width: 180px;
-        }
-
-        .profile-img {
-            width: 180px;
-            height: 270px;
-            object-fit: cover;
-        }
-
-        .contributor-info {
-            flex: 1;
-        }
-
-        .contributor-info h2 {
-            font-size: 22px;
-        }
-
-        .bio {
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .profile-btn {
-            display: inline-block;
-            background: #00a32a;
-            color: #fff;
-            padding: 8px 15px;
-            margin-top: 20px;
-            text-decoration: none;
-            font-size: 12px;
-        }
-
-
-        .social-icons {
-            margin-top: 20px;
-        }
-
-        .social-icons span {
-            border: 1px solid #ddd;
-            padding: 5px 8px;
-            margin-right: 5px;
-        }
-
-
-        .contributor-tabs ul {
-
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            list-style: none;
-
-            padding: 15px 0;
-
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-
-        }
-
-
-        .contributor-tabs a {
-
-            color: #555;
-            text-decoration: none;
-            font-size: 12px;
-
-        }
-
-
-        .contributor-tabs .active a {
-
-            color: #00a32a;
-            font-weight: bold;
-
-        }
-
-
-        .contribution-item {
-
-            padding: 20px 0;
-            border-bottom: 1px solid #eee;
-
-        }
-
-
-        .contribution-item h3 {
-
-            font-size: 18px;
-
-        }
-
-
-        .contribution-meta {
-
-            margin-top: 10px;
-            font-size: 12px;
-            color: #777;
-
-        }
-
-
-        .contribution-meta span {
-
-            margin-right: 15px;
-
-        }
-        .social-icons {
-            margin-top:25px;
-            display:flex;
-            gap:8px;
-        }
-
-
-        .share-icon {
-
-            width:34px;
-            height:34px;
-
-            border:1px solid #ddd;
-            border-radius:50%;
-
-            display:flex;
-            align-items:center;
-            justify-content:center;
-
-            text-decoration:none;
-
-            color:#555;
-
-            font-size:14px;
-
-            transition:all .3s ease;
-
-        }
-
-
-        .share-icon:hover {
-
-            background:#00a32a;
-            border-color:#00a32a;
-            color:#fff;
-
-        }
-
-
-        .facebook:hover {
-            background:#1877f2;
-            border-color:#1877f2;
-        }
-
-
-        .twitter:hover {
-            background:#000;
-            border-color:#000;
-        }
-
-
-        .linkedin:hover {
-            background:#0a66c2;
-            border-color:#0a66c2;
-        }
-
-
-        .pinterest:hover {
-            background:#e60023;
-            border-color:#e60023;
-        }
-
-
-        .telegram:hover {
-            background:#229ed9;
-            border-color:#229ed9;
-        }
-    </style>
 
 
 
@@ -245,7 +59,7 @@ while (have_posts()):
 
 
                 <h2>
-                    <?php the_title(); ?>
+                    <?= $contributor->full_name(); ?>
                 </h2>
 
 
@@ -253,6 +67,8 @@ while (have_posts()):
                 <div class="bio">
 
                     <?php the_content(); ?>
+
+                    <?= $contributor->get_bio(); ?>
 
                 </div>
 
@@ -324,31 +140,13 @@ while (have_posts()):
         <?php
 
 
-        $types = array(
-
-            'Code Contribution' => 'CODE',
-
-            'Learn WordPress' => 'LEARN',
-
-            'Meetup' => 'MEETUPS',
-
-            'Photos Contribution' => 'PHOTOS',
-
-            'Translation' => 'TRANSLATIONS',
-
-            'Support Forum' => 'SUPPORT FORUM',
-
-            'Documentation' => 'DOCUMENTATION',
-
-            'Other' => 'OTHER',
-
-        );
+        $contributions = $contributor->get_user_contributions();
 
 
 
         $current_type = isset($_GET['type'])
             ? sanitize_text_field($_GET['type'])
-            : 'Code Contribution';
+            : ($contributions[0]['type'] ?? '');
 
 
         ?>
@@ -360,21 +158,25 @@ while (have_posts()):
             <ul>
 
 
-                <?php foreach ($types as $key => $label): ?>
+                <?php foreach ($contributions as $contribution){
+                    if($contribution['type'] === $current_type){
+                        $contribution_data = $contribution['data'];
+                    }
+                    ?>
 
 
-                    <li class="<?php echo $current_type === $key ? 'active' : ''; ?>">
+                    <li class="<?php echo $contribution['type'] === $current_type ? 'active' : ''; ?>">
 
 
                         <a href="<?php echo esc_url(
                             add_query_arg(
                                 'type',
-                                $key
+                                $contribution['type']
                             )
                         ); ?>">
 
 
-                            <?php echo esc_html($label); ?>
+                            <?php echo $contribution['name']; ?>
 
 
                         </a>
@@ -383,7 +185,7 @@ while (have_posts()):
                     </li>
 
 
-                <?php endforeach; ?>
+                <?php } ?>
 
 
             </ul>
@@ -396,51 +198,10 @@ while (have_posts()):
         <?php
 
 
-        $contribution_query = new WP_Query(
-
-            array(
-
-                'post_type' => 'wpkcs_contribution',
-
-                'posts_per_page' => 5,
-
-                'orderby' => 'date',
-
-                'order' => 'DESC',
-
-
-                'meta_query' => array(
-
-                    'relation' => 'AND',
-
-
-                    array(
-
-                        'key' => '_wpkcs_username',
-
-                        'value' => $username,
-
-                    ),
-
-
-                    array(
-
-                        'key' => '_wpkcs_type',
-
-                        'value' => $current_type,
-
-                    )
-
-                )
-
-
-            )
-
-        );
 
 
 
-        if ($contribution_query->have_posts()):
+        if (true):
 
 
             ?>
@@ -450,14 +211,13 @@ while (have_posts()):
 
 
 
-                <?php while ($contribution_query->have_posts()):
-
-                    $contribution_query->the_post();
+                <?php foreach ($contribution_data ?? [] as $key => $value) {
+                    
 
 
                     $screenshot = get_post_meta(
 
-                        get_the_ID(),
+                        $value['ID'],
 
                         '_wpkcs_screenshot',
 
@@ -466,20 +226,12 @@ while (have_posts()):
                     );
 
 
-                    $date = get_post_meta(
-
-                        get_the_ID(),
-
-                        '_wpkcs_date',
-
-                        true
-
-                    );
+                    $date = $value['date'];
 
 
                     $time = get_post_meta(
 
-                        get_the_ID(),
+                        $value['ID'],
 
                         '_wpkcs_time_spent',
 
@@ -488,26 +240,46 @@ while (have_posts()):
                     );
 
 
+                    $title = get_post_meta(
+
+                        $value['ID'],
+
+                        '_wpkcs_title',
+
+                        true
+
+                    );
+                    $link = get_post_meta(
+
+                        $value['ID'],
+
+                        '_wpkcs_link',
+
+                        true
+
+                    );
+
+                    if ($current_type == 'Photos Contribution'){
+                        ?>
+                        <div class="photo-contribution" ><?php echo wp_get_attachment_image($screenshot,'small'); ?></div>
+                        <?php
+                        continue;
+                    }
+
+
                     ?>
-
-
-
                     <div class="contribution-item">
 
-
-                        <h3>
-
-                            <?php the_title(); ?>
-
-                        </h3>
+                        <?php if ($current_type == 'Code Contribution') : ?>
+                        <h3></h3>
+                        <?php endif; ?>
 
 
-
+                        <?php if ($current_type == 'Code Contribution') : ?>
                         <div>
-
-                            <?php the_content(); ?>
-
+                            <a href="<?= $link ?>" ><?= $title ?></a>
                         </div>
+                        <?php endif; ?>
 
 
 
@@ -523,13 +295,6 @@ while (have_posts()):
                             </span>
 
 
-
-                            <span>
-
-                                Time:
-                                <?php echo esc_html($time); ?>
-
-                            </span>
 
 
                         </div>
@@ -561,7 +326,7 @@ while (have_posts()):
 
 
 
-                <?php endwhile; ?>
+                <?php } ?>
 
 
             </div>
@@ -575,9 +340,9 @@ while (have_posts()):
             ?>
 
 
-            <p>
+            <!-- <p>
                 No contributions found.
-            </p>
+            </p> -->
 
 
             <?php

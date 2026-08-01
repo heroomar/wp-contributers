@@ -59,6 +59,10 @@ class WPKCS_Form_Handler {
 			? esc_url_raw( wp_unslash( $_POST['wpkcs_contribution_link'] ) )
 			: '';
 
+		$title = isset( $_POST['wpkcs_contribution_title'] )
+			? sanitize_text_field( wp_unslash( $_POST['wpkcs_contribution_title'] ) )
+			: '';
+
 		$time_spent = isset( $_POST['wpkcs_time_spent'] )
 			? sanitize_text_field( wp_unslash( $_POST['wpkcs_time_spent'] ) )
 			: '';
@@ -71,7 +75,6 @@ class WPKCS_Form_Handler {
 			empty( $name ) ||
 			empty( $username ) ||
 			empty( $type ) ||
-			empty( $link ) ||
 			empty( $time_spent ) ||
 			empty( $date )
 		) {
@@ -117,6 +120,7 @@ class WPKCS_Form_Handler {
 		update_post_meta( $post_id, '_wpkcs_username', $username );
 		update_post_meta( $post_id, '_wpkcs_type', $type );
 		update_post_meta( $post_id, '_wpkcs_link', $link );
+		update_post_meta( $post_id, '_wpkcs_title', $title );
 		update_post_meta( $post_id, '_wpkcs_time_spent', $time_spent );
 		update_post_meta( $post_id, '_wpkcs_date', $date );
 

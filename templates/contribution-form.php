@@ -39,13 +39,15 @@ if ( isset( $_GET['wpkcs_status'] ) ) {
 		<option value="Other">Other</option>
 	</select>
 
-	<input type="url" name="wpkcs_contribution_link" placeholder="Contribution Link" required>
+	<input type="text" name="wpkcs_contribution_title" placeholder="Contribution Title" >
+
+	<input type="url" name="wpkcs_contribution_link" placeholder="Contribution Link" >
 
 	<input type="text" name="wpkcs_time_spent" placeholder="Estimated Time Spent" required>
 
-	<input type="date" name="wpkcs_date" required>
+	<input type="date" value="<?= date("Y-m-d") ?>" name="wpkcs_date" required>
 
-	<input type="file" name="wpkcs_screenshot" required>
+	<input type="file" name="wpkcs_screenshot">
 
 	<label>
 		<input type="checkbox" name="wpkcs_confirmation" value="1" required>

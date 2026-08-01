@@ -72,7 +72,11 @@ class WPKCS_Contributor {
 	}
 
 	public function get_bio(){
-		return get_post_field( 'post_content', $this->post_id ); 	
+		return get_post_meta( $this->post_id , '_wpkcs_org_bio', true ); 	
+	}
+
+	public function full_name(){
+		return get_post_meta( $this->post_id , '_wpkcs_org_name', true ); 	
 	}
 
 	public function get_cotribution_count(){
@@ -91,6 +95,77 @@ class WPKCS_Contributor {
 
         return $contributions->found_posts;
 	}
+
+
+	function get_user_contributions($posts_per_page = 5)
+	{
+		$types = array(
+
+            'Code Contribution' => 'CODE',
+
+            'Learn WordPress' => 'LEARN',
+
+            'Meetup' => 'MEETUPS',
+
+            'Photos Contribution' => 'PHOTOS',
+
+            'Translation' => 'TRANSLATIONS',
+
+            'Support Forum' => 'SUPPORT FORUM',
+
+            'Documentation' => 'DOCUMENTATION',
+
+            'Other' => 'OTHER',
+
+        );
+
+		$contributions = array();
+
+		foreach($types as $type => $name){
+			$contribution = [
+				'name' => $name,
+				'type' => $type,
+				'data' => []
+			];
+			$query = new WP_Query(array(
+				'post_type'      => 'wpkcs_contribution',
+				'posts_per_page' => $posts_per_page,
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+				'meta_query'     => array(
+					'relation' => 'AND',
+					array(
+						'key'   => '_wpkcs_username',
+						'value' => $this->get_username(),
+					),
+					array(
+						'key'   => '_wpkcs_type',
+						'value' => $type,
+					),
+				),
+			));
+
+			if ($query->have_posts()) {
+				while ($query->have_posts()) {
+					$query->the_post();
+
+					$contribution['data'][] = array(
+						'ID'      => get_the_ID(),
+						'title'   => get_the_title(),
+						'date'    => get_the_date(),
+						// 'content' => get_the_content(),
+						// 'post'    => get_post(),
+					);
+				}
+				wp_reset_postdata();
+				$contributions[]=$contribution;
+			}
+			
+		}
+
+		return $contributions;
+	}
+
 
 	
 }
