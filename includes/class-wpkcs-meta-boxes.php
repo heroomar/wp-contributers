@@ -138,7 +138,7 @@ class WPKCS_Meta_Boxes {
 						<option <?php echo esc_attr( $type ) == "Documentation" ? 'selected' : ''; ?> value="Documentation">Documentation Contribution</option>
 						<option <?php echo esc_attr( $type ) == "Learn WordPress" ? 'selected' : ''; ?> value="Learn WordPress">Learn WordPress</option>
 						<option <?php echo esc_attr( $type ) == "Code Contribution" ? 'selected' : ''; ?> value="Code Contribution">Code Contribution</option>
-						<option <?php echo esc_attr( $type ) == "Other" ? 'selected' : ''; ?> value="Other">Other</option>
+						<!-- <option <?php echo esc_attr( $type ) == "Other" ? 'selected' : ''; ?> value="Other">Other</option> -->
 					</select>
 				</td>
 			</tr>

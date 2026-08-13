@@ -282,6 +282,13 @@ while (have_posts()):
                         <?php endif; ?>
 
 
+                        <?php if ($current_type == 'Translation') : ?>
+                        <div>
+                            <a href="<?= $link ?>" ><?= $title ?></a>
+                        </div>
+                        <?php endif; ?>
+
+
 
 
                         <div class="contribution-meta">

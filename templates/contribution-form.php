@@ -36,7 +36,7 @@ if ( isset( $_GET['wpkcs_status'] ) ) {
 		<option value="Documentation">Documentation Contribution</option>
 		<option value="Learn WordPress">Learn WordPress</option>
 		<option value="Code Contribution">Code Contribution</option>
-		<option value="Other">Other</option>
+		<!-- <option value="Other">Other</option> -->
 	</select>
 
 	<input type="text" name="wpkcs_contribution_title" placeholder="Contribution Title" >
