@@ -203,7 +203,7 @@ while (have_posts()):
 
         if (true):
 
-
+            $months=[];
             ?>
 
 
@@ -225,8 +225,8 @@ while (have_posts()):
 
                     );
 
-
-                    $date = $value['date'];
+                    
+                    $date = get_post_meta($value['ID'],"_wpkcs_date",true);
 
 
                     $time = get_post_meta(
@@ -270,6 +270,16 @@ while (have_posts()):
                     ?>
                     <div class="contribution-item">
 
+                        <?php
+                        if (!isset($months[date("M",strtotime($date))])){
+                            $months[date("M",strtotime($date))] = '-';
+                            ?>
+                            <h3><strong>CONTRIBUTION MONTH: <?= strtoupper(date("M",strtotime($date))) ?>, <?= (date("Y",strtotime($date))) ?></strong></h3>
+                            <?php
+                        }
+                        ?>
+                        
+
                         <?php if ($current_type == 'Code Contribution') : ?>
                         <h3></h3>
                         <?php endif; ?>
@@ -283,6 +293,26 @@ while (have_posts()):
 
 
                         <?php if ($current_type == 'Translation') : ?>
+                        <div>
+                            <a href="<?= $link ?>" ><?= $title ?></a>
+                        </div>
+                        <?php endif; ?>
+
+
+                        <?php if ($current_type == 'Support Forum') : ?>
+                        <div>
+                            <a href="<?= $link ?>" ><?= $title ?></a>
+                        </div>
+                        <?php endif; ?>
+
+                        <?php if ($current_type == 'Meetup') : ?>
+                        <div>
+                            <a href="<?= $link ?>" ><?= $title ?></a>
+                        </div>
+                        <?php endif; ?>
+
+
+                        <?php if ($current_type == 'Learn WordPress') : ?>
                         <div>
                             <a href="<?= $link ?>" ><?= $title ?></a>
                         </div>

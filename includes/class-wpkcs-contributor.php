@@ -130,8 +130,12 @@ class WPKCS_Contributor {
 			$query = new WP_Query(array(
 				'post_type'      => 'wpkcs_contribution',
 				'posts_per_page' => $posts_per_page,
-				'orderby'        => 'date',
+				'meta_key'       => '_wpkcs_date',
+				'orderby'        => 'meta_value',
+				'meta_type'      => 'DATE',
 				'order'          => 'DESC',
+				// 'orderby'        => 'date',
+				// 'order'          => 'DESC',
 				'meta_query'     => array(
 					'relation' => 'AND',
 					array(
