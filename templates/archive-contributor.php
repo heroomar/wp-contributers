@@ -2,7 +2,7 @@
 get_header();
 ?>
 
-<h1><?php esc_html_e( 'Contributors', 'wpkcs' ); ?></h1>
+<h1><?php esc_html_e( 'Contributors', 'wp-contributers' ); ?></h1>
 
 <div class="wpkcs-contributors-grid">
 
@@ -72,7 +72,7 @@ get_header();
 							echo esc_html( $contributor->get_cotribution_count() );
 							?>
 
-							<?php esc_html_e( 'Contributions', 'wpkcs' ); ?>
+							<?php esc_html_e( 'Contributions', 'wp-contributers' ); ?>
 
 						</span>
 
@@ -90,7 +90,7 @@ get_header();
 
 	else :
 
-		echo '<p>' . esc_html__( 'No contributors found.', 'wpkcs' ) . '</p>';
+		echo '<p>' . esc_html__( 'No contributors found.', 'wp-contributers' ) . '</p>';
 
 	endif;
 	?>

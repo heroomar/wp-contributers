@@ -46,7 +46,7 @@
 					<div class="wpkcs-card-footer">
 						<span class="wpkcs-card-count">
 							<?php echo esc_html( $contributor->get_cotribution_count() ); ?>
-							<?php esc_html_e( 'Contributions', 'wpkcs' ); ?>
+							<?php esc_html_e( 'Contributions', 'wp-contributers' ); ?>
 						</span>
 					</div>
 				</div>
@@ -56,7 +56,7 @@
 
 		wp_reset_postdata();
 	else :
-		echo '<p>' . esc_html__( 'No contributors found.', 'wpkcs' ) . '</p>';
+		echo '<p>' . esc_html__( 'No contributors found.', 'wp-contributers' ) . '</p>';
 	endif;
 	?>
 </div>

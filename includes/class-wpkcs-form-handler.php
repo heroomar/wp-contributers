@@ -36,7 +36,7 @@ class WPKCS_Form_Handler {
 		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				__( 'Security verification failed.', 'wpkcs' )
+				__( 'Security verification failed.', 'wp-contributers' )
 			);
 		}
 
@@ -77,7 +77,7 @@ class WPKCS_Form_Handler {
 		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				__( 'Please fill all required fields.', 'wpkcs' )
+				__( 'Please fill all required fields.', 'wp-contributers' )
 			);
 		}
 
@@ -89,7 +89,7 @@ class WPKCS_Form_Handler {
 		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				__( 'WordPress.org profile could not be found. Please check the username.', 'wpkcs' )
+				__( 'WordPress.org profile could not be found. Please check the username.', 'wp-contributers' )
 			);
 		}
 
@@ -116,56 +116,77 @@ class WPKCS_Form_Handler {
 		update_post_meta( $post_id, '_wpkcs_time_spent', $time_spent );
 		update_post_meta( $post_id, '_wpkcs_date', $date );
 
-		if ( ! empty( $_FILES['wpkcs_screenshot']['name'] ) ) {
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-			require_once ABSPATH . 'wp-admin/includes/media.php';
-			require_once ABSPATH . 'wp-admin/includes/image.php';
-
-			$uploaded_file = $_FILES['wpkcs_screenshot'];
-			$file_type     = wp_check_filetype( $uploaded_file['name'] );
-
-			$allowed_types = array(
-				'jpg',
-				'jpeg',
-				'png',
-				'webp',
+		if (
+			isset( $_FILES['wpkcs_screenshot'] ) &&
+			is_array( $_FILES['wpkcs_screenshot'] )
+		) {
+			$uploaded_file = array(
+				'name'     => isset( $_FILES['wpkcs_screenshot']['name'] )
+					? sanitize_file_name( wp_unslash( $_FILES['wpkcs_screenshot']['name'] ) )
+					: '',
+				'type'     => isset( $_FILES['wpkcs_screenshot']['type'] )
+					? sanitize_text_field( wp_unslash( $_FILES['wpkcs_screenshot']['type'] ) )
+					: '',
+				'tmp_name' => isset( $_FILES['wpkcs_screenshot']['tmp_name'] )
+					? sanitize_text_field( wp_unslash( $_FILES['wpkcs_screenshot']['tmp_name'] ) )
+					: '',
+				'error'    => isset( $_FILES['wpkcs_screenshot']['error'] )
+					? absint( $_FILES['wpkcs_screenshot']['error'] )
+					: UPLOAD_ERR_NO_FILE,
+				'size'     => isset( $_FILES['wpkcs_screenshot']['size'] )
+					? absint( $_FILES['wpkcs_screenshot']['size'] )
+					: 0,
 			);
 
-			if ( ! in_array( $file_type['ext'], $allowed_types, true ) ) {
-				$this->wpkcs_redirect_with_message(
-					'error',
-					__( 'Invalid file type.', 'wpkcs' )
+			if (
+				UPLOAD_ERR_OK === $uploaded_file['error'] &&
+				! empty( $uploaded_file['name'] )
+			) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				require_once ABSPATH . 'wp-admin/includes/media.php';
+				require_once ABSPATH . 'wp-admin/includes/image.php';
+
+				$file_type = wp_check_filetype( $uploaded_file['name'] );
+
+				$allowed_types = array(
+					'jpg',
+					'jpeg',
+					'png',
+					'webp',
+				);
+
+				if ( ! in_array( $file_type['ext'], $allowed_types, true ) ) {
+					$this->wpkcs_redirect_with_message(
+						'error',
+						__( 'Invalid file type.', 'wp-contributers' )
+					);
+				}
+
+				$attachment_id = media_handle_sideload(
+					$uploaded_file,
+					$post_id
+				);
+
+				if ( is_wp_error( $attachment_id ) ) {
+					$this->wpkcs_redirect_with_message(
+						'error',
+						$attachment_id->get_error_message()
+					);
+				}
+
+				update_post_meta(
+					$post_id,
+					'_wpkcs_screenshot',
+					$attachment_id
 				);
 			}
-
-			$attachment_id = media_handle_upload(
-				'wpkcs_screenshot',
-				$post_id
-			);
-
-			if ( is_wp_error( $attachment_id ) ) {
-				$this->wpkcs_redirect_with_message(
-					'error',
-					$attachment_id->get_error_message()
-				);
-			}
-
-			update_post_meta(
-				$post_id,
-				'_wpkcs_screenshot',
-				$attachment_id
-			);
 		}
 
-		$mail_sent = WPKCS_Mailer::wpkcs_send_admin_email( $post_id );
-
-		if ( ! $mail_sent ) {
-			// Email failure does not prevent submission.
-		}
+		WPKCS_Mailer::wpkcs_send_admin_email( $post_id );
 
 		$this->wpkcs_redirect_with_message(
 			'success',
-			__( 'Contribution submitted successfully and is pending review.', 'wpkcs' )
+			__( 'Contribution submitted successfully and is pending review.', 'wp-contributers' )
 		);
 	}
 }

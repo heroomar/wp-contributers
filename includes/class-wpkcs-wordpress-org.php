@@ -8,15 +8,37 @@ class WPKCS_WordPress_Org {
 
 	public static function wpkcs_fetch_profile( $username ) {
 
-		$existing = get_page_by_title(
-			$username,
-			OBJECT,
-			'wpkcs_contributor'
+		$existing_query = new WP_Query(
+			array(
+				'post_type'              => 'wpkcs_contributor',
+				'post_status'            => 'any',
+				's'                      => $username,
+				'posts_per_page'         => -1,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
 		);
+
+		$existing = false;
+
+		if ( $existing_query->have_posts() ) {
+			while ( $existing_query->have_posts() ) {
+				$existing_query->the_post();
+
+				if ( get_the_title() === $username ) {
+					$existing = true;
+					break;
+				}
+			}
+		}
+
+		wp_reset_postdata();
 
 		if ( $existing ) {
 			return true;
 		}
+
 
 		$response = wp_remote_get(
 			'https://profiles.wordpress.org/wp-json/wporg/v1/users/' . rawurlencode( $username )

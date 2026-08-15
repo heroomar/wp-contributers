@@ -102,14 +102,14 @@ class WPKCS_Contributor {
 
 	public function get_user_contributions( $posts_per_page = 5 ) {
 		$types = array(
-			'Code Contribution'    => __( 'CODE', 'wpkcs' ),
-			'Learn WordPress'      => __( 'LEARN', 'wpkcs' ),
-			'Meetup'               => __( 'MEETUPS', 'wpkcs' ),
-			'Photos Contribution'  => __( 'PHOTOS', 'wpkcs' ),
-			'Translation'          => __( 'TRANSLATIONS', 'wpkcs' ),
-			'Support Forum'        => __( 'SUPPORT FORUM', 'wpkcs' ),
-			'Documentation'        => __( 'DOCUMENTATION', 'wpkcs' ),
-			'Other'                => __( 'OTHER', 'wpkcs' ),
+			'Code Contribution'    => __( 'CODE', 'wp-contributers' ),
+			'Learn WordPress'      => __( 'LEARN', 'wp-contributers' ),
+			'Meetup'               => __( 'MEETUPS', 'wp-contributers' ),
+			'Photos Contribution'  => __( 'PHOTOS', 'wp-contributers' ),
+			'Translation'          => __( 'TRANSLATIONS', 'wp-contributers' ),
+			'Support Forum'        => __( 'SUPPORT FORUM', 'wp-contributers' ),
+			'Documentation'        => __( 'DOCUMENTATION', 'wp-contributers' ),
+			'Other'                => __( 'OTHER', 'wp-contributers' ),
 		);
 
 		$contributions = array();

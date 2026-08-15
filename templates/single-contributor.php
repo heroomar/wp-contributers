@@ -1,7 +1,9 @@
 <?php
 get_header();
+
 while ( have_posts() ) :
 	the_post();
+
 	$post_id     = get_the_ID();
 	$contributor = new WPKCS_Contributor( $post_id );
 	$username    = $contributor->get_username();
@@ -28,53 +30,63 @@ while ( have_posts() ) :
 				}
 				?>
 			</div>
+
 			<div class="contributor-info">
 				<h2><?php echo esc_html( $contributor->full_name() ); ?></h2>
+
 				<div class="bio">
 					<?php the_content(); ?>
 					<?php echo esc_html( $contributor->get_bio() ); ?>
 				</div>
+
 				<a
 					class="profile-btn"
 					href="<?php echo esc_url( 'https://profiles.wordpress.org/' . rawurlencode( $username ) ); ?>"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					<?php esc_html_e( 'WORDPRESS.ORG PROFILE', 'wpkcs' ); ?>
+					<?php esc_html_e( 'WORDPRESS.ORG PROFILE', 'wp-contributers' ); ?>
 				</a>
+
 				<div class="social-icons share-icons">
 					<?php
 					$share_url   = rawurlencode( get_permalink() );
 					$share_title = rawurlencode( get_the_title() );
 					?>
+
 					<a
 						href="<?php echo esc_url( 'https://www.facebook.com/sharer.php?u=' . $share_url ); ?>"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="share-icon facebook"
 					>f</a>
+
 					<a
 						href="<?php echo esc_url( 'https://twitter.com/share?url=' . $share_url . '&text=' . $share_title ); ?>"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="share-icon twitter"
 					>𝕏</a>
+
 					<a
 						href="<?php echo esc_url( 'https://www.linkedin.com/shareArticle?mini=true&url=' . $share_url . '&title=' . $share_title ); ?>"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="share-icon linkedin"
 					>in</a>
+
 					<a
 						href="<?php echo esc_url( 'mailto:?subject=' . $share_title . '&body=' . $share_url ); ?>"
 						class="share-icon email"
 					>✉</a>
+
 					<a
 						href="<?php echo esc_url( 'https://pinterest.com/pin/create/button/?url=' . $share_url ); ?>"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="share-icon pinterest"
 					>P</a>
+
 					<a
 						href="<?php echo esc_url( 'https://t.me/share/url?url=' . $share_url ); ?>"
 						target="_blank"
@@ -84,12 +96,19 @@ while ( have_posts() ) :
 				</div>
 			</div>
 		</div>
+
 		<?php
 		$contributions = $contributor->get_user_contributions();
-		$current_type  = isset( $_GET['type'] )
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public filter parameter; no data is modified.
+		$current_type = isset( $_GET['type'] )
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public filter parameter; no data is modified.
 			? sanitize_text_field( wp_unslash( $_GET['type'] ) )
 			: ( $contributions[0]['type'] ?? '' );
+
+		$contribution_data = array();
 		?>
+
 		<div class="contributor-tabs">
 			<ul>
 				<?php
@@ -108,12 +127,14 @@ while ( have_posts() ) :
 				?>
 			</ul>
 		</div>
+
 		<?php
 		$months = array();
 		?>
+
 		<div class="contribution-list">
 			<?php
-			foreach ( $contribution_data ?? array() as $value ) {
+			foreach ( $contribution_data as $value ) {
 				$screenshot = get_post_meta( $value['ID'], '_wpkcs_screenshot', true );
 				$date       = get_post_meta( $value['ID'], '_wpkcs_date', true );
 				$title      = get_post_meta( $value['ID'], '_wpkcs_title', true );
@@ -128,21 +149,23 @@ while ( have_posts() ) :
 					continue;
 				}
 
-				$month_key = date( 'M', strtotime( $date ) );
+				$timestamp = strtotime( $date );
+				$month_key = gmdate( 'M', $timestamp );
 
 				if ( ! isset( $months[ $month_key ] ) ) {
 					$months[ $month_key ] = '-';
 					?>
 					<h3>
 						<strong>
-							<?php esc_html_e( 'CONTRIBUTION MONTH:', 'wpkcs' ); ?>
-							<?php echo esc_html( strtoupper( date( 'M', strtotime( $date ) ) ) ); ?>,
-							<?php echo esc_html( date( 'Y', strtotime( $date ) ) ); ?>
+							<?php esc_html_e( 'CONTRIBUTION MONTH:', 'wp-contributers' ); ?>
+							<?php echo esc_html( strtoupper( gmdate( 'M', $timestamp ) ) ); ?>,
+							<?php echo esc_html( gmdate( 'Y', $timestamp ) ); ?>
 						</strong>
 					</h3>
 					<?php
 				}
 				?>
+
 				<div class="contribution-item">
 					<?php if ( in_array( $current_type, array( 'Code Contribution', 'Translation', 'Support Forum', 'Meetup', 'Learn WordPress' ), true ) ) : ?>
 						<div>
@@ -151,12 +174,14 @@ while ( have_posts() ) :
 							</a>
 						</div>
 					<?php endif; ?>
+
 					<div class="contribution-meta">
 						<span>
-							<?php esc_html_e( 'Date:', 'wpkcs' ); ?>
+							<?php esc_html_e( 'Date:', 'wp-contributers' ); ?>
 							<?php echo esc_html( $date ); ?>
 						</span>
 					</div>
+
 					<?php
 					if ( $screenshot ) {
 						echo wp_get_attachment_image( $screenshot, 'medium' );
@@ -165,9 +190,11 @@ while ( have_posts() ) :
 				</div>
 			<?php } ?>
 		</div>
+
 		<?php wp_reset_postdata(); ?>
 	</div>
 	<?php
 endwhile;
+
 get_footer();
 ?>
