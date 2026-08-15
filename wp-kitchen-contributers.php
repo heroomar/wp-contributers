@@ -1,12 +1,16 @@
 <?php
 /**
- * Plugin Name: Wp Kitchen Contributers
- * Plugin URI: https://example.com
- * Description: Contribution management system for WP Kitchen contributors.
+ * Plugin Name: Wp Contributers
+ * Plugin URI: https://wpkitchen.com
+ * Description: Contribution management system for WordPress contributors.
  * Version: 1.0.0
- * Author: Umer Zaki
- * Text Domain: wp-kitchen-contributers
+ * Author: Pomy
+ * Text Domain: wp-contributers
  * Domain Path: /languages
+ * License: GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Requires at least: 6.0
+ * Requires PHP: 7.4
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,7 +23,9 @@ define( 'WPKCS_VERSION', '1.0.0' );
 
 require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-loader.php';
 require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-meta-boxes.php';
+
 new WPKCS_Meta_Boxes();
+
 function wpkcs_run_plugin() {
 	$plugin = new WPKCS_Loader();
 	$plugin->run();

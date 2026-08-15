@@ -2,109 +2,101 @@
 get_header();
 ?>
 
-<h1>Contributors</h1>
+<h1><?php esc_html_e( 'Contributors', 'wpkcs' ); ?></h1>
 
 <div class="wpkcs-contributors-grid">
 
-    <?php
-    if ( have_posts() ) :
+	<?php
+	if ( have_posts() ) :
 
-        while ( have_posts() ) : the_post(); 
-            
+		while ( have_posts() ) :
+			the_post();
 
-            $post_id = get_the_ID();
+			$post_id    = get_the_ID();
+			$contributor = new WPKCS_Contributor( $post_id );
+			$avatar      = $contributor->get_avatar();
+			?>
 
-            $contributor = new WPKCS_Contributor( $post_id );
+			<a
+				class="wpkcs-contributor-card"
+				href="<?php the_permalink(); ?>"
+			>
 
-            ?>
+				<div class="wpkcs-card-avatar">
 
-            <a class="wpkcs-contributor-card" href="<?php the_permalink(); ?>" >
+					<?php if ( $avatar ) : ?>
 
-                <div class="wpkcs-card-avatar">
+						<img
+							src="<?php echo esc_url( $avatar ); ?>"
+							alt="<?php the_title_attribute(); ?>"
+						>
 
-                    <?php if ( $contributor->get_avatar() ) : ?>
+					<?php else : ?>
 
-                        <img
-                            src="<?php echo esc_url( $contributor->get_avatar() ); ?>"
-                            alt="<?php the_title_attribute(); ?>"
-                        >
+						<div class="wpkcs-card-placeholder">
 
-                    <?php else : ?>
+							<?php
+							echo esc_html(
+								strtoupper(
+									substr(
+										get_the_title(),
+										0,
+										1
+									)
+								)
+							);
+							?>
 
-                        <div class="wpkcs-card-placeholder">
+						</div>
 
-                            <?php
-                            echo esc_html(
-                                strtoupper(
-                                    substr(
-                                        get_the_title(),
-                                        0,
-                                        1
-                                    )
-                                )
-                            );
-                            ?>
+					<?php endif; ?>
 
-                        </div>
+				</div>
 
-                    <?php endif; ?>
+				<div class="wpkcs-card-content">
 
-                </div>
+					<h3 class="wpkcs-card-name">
+						<?php echo esc_html( get_post_meta( $post_id, '_wpkcs_org_name', true ) ); ?>
+					</h3>
 
-                <div class="wpkcs-card-content">
+					<div class="wpkcs-card-username">
+						@
+						<?php echo esc_html( $contributor->get_username() ); ?>
+					</div>
 
-                    <h3 class="wpkcs-card-name">
-                        <?= get_post_meta($post_id,"_wpkcs_org_name",true); ?>
-                    </h3>
+					<div class="wpkcs-card-footer">
 
-                    <div class="wpkcs-card-username">
-                        @
-                        <?php echo esc_html( $contributor->get_username() ); ?>
-                    </div>
+						<span class="wpkcs-card-count">
 
-                    <!-- <div class="wpkcs-card-bio">
-                        <?php //esc_html( $bio ); ?>
-                    </div> -->
+							<?php
+							echo esc_html( $contributor->get_cotribution_count() );
+							?>
 
-                    <div class="wpkcs-card-footer">
+							<?php esc_html_e( 'Contributions', 'wpkcs' ); ?>
 
-                        <span class="wpkcs-card-count">
+						</span>
 
-                            <?php
-                            echo esc_html( $contributor->get_cotribution_count() );
-                            ?>
+					</div>
 
-                            Contributions
+				</div>
 
-                        </span>
+			</a>
 
-                        <!-- <a
-                            href="<?php echo esc_url( add_query_arg( 'profile', $contributor->get_username(), get_permalink() ) ); ?>"
-                            class="wpkcs-card-button"
-                        >
-                            View Profile
-                        </a> -->
+			<?php
 
-                    </div>
+		endwhile;
 
-                </div>
+		wp_reset_postdata();
 
-            </a>
+	else :
 
-            <?php
+		echo '<p>' . esc_html__( 'No contributors found.', 'wpkcs' ) . '</p>';
 
-        endwhile;
-
-        wp_reset_postdata();
-
-    else :
-
-        echo '<p>No contributors found.</p>';
-
-    endif;
-    ?>
+	endif;
+	?>
 
 </div>
 
 <?php
 get_footer();
+?>

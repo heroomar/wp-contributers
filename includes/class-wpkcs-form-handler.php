@@ -1,5 +1,4 @@
 <?php
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -11,11 +10,10 @@ class WPKCS_Form_Handler {
 	}
 
 	private function wpkcs_redirect_with_message( $status, $message ) {
-
 		$redirect_url = add_query_arg(
 			array(
 				'wpkcs_status' => $status,
-				'message'      => rawurlencode( $message ),
+				'message'      => $message,
 			),
 			wp_get_referer()
 		);
@@ -25,7 +23,6 @@ class WPKCS_Form_Handler {
 	}
 
 	public function wpkcs_handle_form_submission() {
-
 		if ( ! isset( $_POST['wpkcs_submit_form'] ) ) {
 			return;
 		}
@@ -39,7 +36,7 @@ class WPKCS_Form_Handler {
 		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				'Security verification failed.'
+				__( 'Security verification failed.', 'wpkcs' )
 			);
 		}
 
@@ -80,23 +77,19 @@ class WPKCS_Form_Handler {
 		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				'Please fill all required fields.'
+				__( 'Please fill all required fields.', 'wpkcs' )
 			);
 		}
 
-		/*
-		|--------------------------------------------------------------------------
-		| Fetch WordPress.org Profile
-		|--------------------------------------------------------------------------
-		*/
-
 		$wp_org_profile = WPKCS_WordPress_Org::wpkcs_fetch_profile( $username );
 
-		if ($wp_org_profile !== true && (!is_array($wp_org_profile) || !isset($wp_org_profile['name']))){
-			
+		if (
+			true !== $wp_org_profile &&
+			( ! is_array( $wp_org_profile ) || ! isset( $wp_org_profile['name'] ) )
+		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				'Wordpress.org profile could not be found please check username.'
+				__( 'WordPress.org profile could not be found. Please check the username.', 'wpkcs' )
 			);
 		}
 
@@ -110,7 +103,6 @@ class WPKCS_Form_Handler {
 		);
 
 		if ( is_wp_error( $post_id ) ) {
-
 			$this->wpkcs_redirect_with_message(
 				'error',
 				$post_id->get_error_message()
@@ -124,21 +116,13 @@ class WPKCS_Form_Handler {
 		update_post_meta( $post_id, '_wpkcs_time_spent', $time_spent );
 		update_post_meta( $post_id, '_wpkcs_date', $date );
 
-		/*
-		|--------------------------------------------------------------------------
-		| Upload Screenshot
-		|--------------------------------------------------------------------------
-		*/
-
 		if ( ! empty( $_FILES['wpkcs_screenshot']['name'] ) ) {
-
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 			require_once ABSPATH . 'wp-admin/includes/media.php';
 			require_once ABSPATH . 'wp-admin/includes/image.php';
 
 			$uploaded_file = $_FILES['wpkcs_screenshot'];
-
-			$file_type = wp_check_filetype( $uploaded_file['name'] );
+			$file_type     = wp_check_filetype( $uploaded_file['name'] );
 
 			$allowed_types = array(
 				'jpg',
@@ -148,10 +132,9 @@ class WPKCS_Form_Handler {
 			);
 
 			if ( ! in_array( $file_type['ext'], $allowed_types, true ) ) {
-
 				$this->wpkcs_redirect_with_message(
 					'error',
-					'Invalid file type.'
+					__( 'Invalid file type.', 'wpkcs' )
 				);
 			}
 
@@ -161,7 +144,6 @@ class WPKCS_Form_Handler {
 			);
 
 			if ( is_wp_error( $attachment_id ) ) {
-
 				$this->wpkcs_redirect_with_message(
 					'error',
 					$attachment_id->get_error_message()
@@ -175,27 +157,15 @@ class WPKCS_Form_Handler {
 			);
 		}
 
-		
-
-		/*
-		|--------------------------------------------------------------------------
-		| Send Email
-		|--------------------------------------------------------------------------
-		*/
-
 		$mail_sent = WPKCS_Mailer::wpkcs_send_admin_email( $post_id );
 
 		if ( ! $mail_sent ) {
-
-			// $this->wpkcs_redirect_with_message(
-			// 	'error',
-			// 	'Contribution saved but email could not be sent.'
-			// );
+			// Email failure does not prevent submission.
 		}
 
 		$this->wpkcs_redirect_with_message(
 			'success',
-			'Contribution submitted successfully and is pending review.'
+			__( 'Contribution submitted successfully and is pending review.', 'wpkcs' )
 		);
 	}
 }

@@ -1,14 +1,7 @@
 <?php
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
-/*
-|--------------------------------------------------------------------------
-| Get Contributor Profile
-|--------------------------------------------------------------------------
-*/
 
 $contributor = get_page_by_title(
 	$profile,
@@ -17,24 +10,18 @@ $contributor = get_page_by_title(
 );
 
 if ( ! $contributor ) {
-
-	echo '<p>No contributor found.</p>';
-
+	echo '<p>' . esc_html__( 'No contributor found.', 'wpkcs' ) . '</p>';
 	return;
 }
 
-$avatar = get_post_meta(
+$avatar_urls = get_post_meta(
 	$contributor->ID,
-	"_wpkcs_org_avatar_urls"
-)[0][96] ?? ''; 
+	'_wpkcs_org_avatar_urls',
+	true
+);
 
-$bio = $contributor->post_content;
-
-/*
-|--------------------------------------------------------------------------
-| Get Contributions
-|--------------------------------------------------------------------------
-*/
+$avatar = $avatar_urls[96] ?? '';
+$bio    = $contributor->post_content;
 
 $args = array(
 	'post_type'      => 'wpkcs_contribution',
@@ -50,62 +37,40 @@ $args = array(
 );
 
 $query = new WP_Query( $args );
-
 ?>
 
 <div class="wpkcs-profile-page">
-
 	<div class="wpkcs-profile-card">
-
 		<div class="wpkcs-profile-avatar">
-
 			<?php if ( $avatar ) : ?>
-
 				<img
 					src="<?php echo esc_url( $avatar ); ?>"
 					alt="<?php echo esc_attr( $profile ); ?>"
 				>
-
 			<?php else : ?>
-
 				<div class="wpkcs-avatar-placeholder">
 					<?php echo esc_html( strtoupper( substr( $profile, 0, 1 ) ) ); ?>
 				</div>
-
 			<?php endif; ?>
-
 		</div>
-
 		<div class="wpkcs-profile-content">
-
 			<h1 class="wpkcs-profile-name">
 				<?php echo esc_html( $profile ); ?>
 			</h1>
-
 			<div class="wpkcs-profile-role">
-				WordPress Contributor
+				<?php esc_html_e( 'WordPress Contributor', 'wpkcs' ); ?>
 			</div>
-
 			<div class="wpkcs-profile-bio">
-
 				<?php echo wp_kses_post( wpautop( $bio ) ); ?>
-
 			</div>
-
 		</div>
-
 	</div>
-
 	<div class="wpkcs-timeline-wrapper">
-
 		<h2 class="wpkcs-section-title">
-			Contributions
+			<?php esc_html_e( 'Contributions', 'wpkcs' ); ?>
 		</h2>
-
 		<?php if ( $query->have_posts() ) : ?>
-
 			<div class="wpkcs-timeline">
-
 				<?php
 				while ( $query->have_posts() ) :
 					$query->the_post();
@@ -133,77 +98,49 @@ $query = new WP_Query( $args );
 						'_wpkcs_date',
 						true
 					);
-
 					?>
-
 					<div class="wpkcs-timeline-item">
-
 						<div class="wpkcs-timeline-dot"></div>
-
 						<div class="wpkcs-timeline-card">
-
 							<div class="wpkcs-timeline-header">
-
 								<span class="wpkcs-contribution-type">
 									<?php echo esc_html( $type ); ?>
 								</span>
-
 								<span class="wpkcs-contribution-date">
 									<?php echo esc_html( date_i18n( 'F j, Y', strtotime( $date ) ) ); ?>
 								</span>
-
 							</div>
-
 							<h3 class="wpkcs-contribution-title">
 								<?php the_title(); ?>
 							</h3>
-
 							<div class="wpkcs-contribution-content">
-
 								<?php the_content(); ?>
-
 							</div>
-
 							<div class="wpkcs-contribution-footer">
-
 								<span class="wpkcs-time-spent">
 									⏱ <?php echo esc_html( $time ); ?>
 								</span>
-
 								<?php if ( $link ) : ?>
-
 									<a
 										href="<?php echo esc_url( $link ); ?>"
 										target="_blank"
 										rel="noopener noreferrer"
 										class="wpkcs-view-link"
 									>
-										View Contribution →
+										<?php esc_html_e( 'View Contribution →', 'wpkcs' ); ?>
 									</a>
-
 								<?php endif; ?>
-
 							</div>
-
 						</div>
-
 					</div>
-
 					<?php
-
 				endwhile;
 
 				wp_reset_postdata();
 				?>
-
 			</div>
-
 		<?php else : ?>
-
-			<p>No contributions found.</p>
-
+			<p><?php esc_html_e( 'No contributions found.', 'wpkcs' ); ?></p>
 		<?php endif; ?>
-
 	</div>
-
 </div>

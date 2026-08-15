@@ -1,61 +1,41 @@
 <?php
 if ( isset( $_GET['wpkcs_status'] ) ) {
-
 	$status  = sanitize_text_field( wp_unslash( $_GET['wpkcs_status'] ) );
-	$message = isset( $_GET['message'] )
-		? sanitize_text_field( wp_unslash( $_GET['message'] ) )
-		: '';
+	$message = isset( $_GET['message'] ) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : '';
 
 	if ( 'success' === $status ) {
-		echo '<div class="wpkcs-notice-success">';
-		echo esc_html( $message );
-		echo '</div>';
+		echo '<div class="wpkcs-notice-success">' . esc_html( $message ) . '</div>';
 	}
 
 	if ( 'error' === $status ) {
-		echo '<div class="wpkcs-notice-error">';
-		echo esc_html( $message );
-		echo '</div>';
+		echo '<div class="wpkcs-notice-error">' . esc_html( $message ) . '</div>';
 	}
 }
 ?>
 <form method="post" enctype="multipart/form-data" class="wpkcs-form">
-
 	<?php wp_nonce_field( 'wpkcs_submit_contribution', 'wpkcs_nonce' ); ?>
-
-	<input type="text" name="wpkcs_name" placeholder="Your Name" required>
-
-	<input type="text" name="wpkcs_wporg_username" placeholder="WordPress.org Username" required>
-
+	<input type="text" name="wpkcs_name" placeholder="<?php esc_attr_e( 'Your Name', 'wpkcs' ); ?>" required>
+	<input type="text" name="wpkcs_wporg_username" placeholder="<?php esc_attr_e( 'WordPress.org Username', 'wpkcs' ); ?>" required>
 	<select name="wpkcs_contribution_type" required>
-		<option value="">Select Contribution Type</option>
-		<option value="Photos Contribution">Photos Contribution</option>
-		<option value="Translation">Translation</option>
-		<option value="Support Forum">Support Forum</option>
-		<option value="Meetup">Meetup Participation</option>
-		<option value="Documentation">Documentation Contribution</option>
-		<option value="Learn WordPress">Learn WordPress</option>
-		<option value="Code Contribution">Code Contribution</option>
-		<!-- <option value="Other">Other</option> -->
+		<option value=""><?php esc_html_e( 'Select Contribution Type', 'wpkcs' ); ?></option>
+		<option value="Photos Contribution"><?php esc_html_e( 'Photos Contribution', 'wpkcs' ); ?></option>
+		<option value="Translation"><?php esc_html_e( 'Translation', 'wpkcs' ); ?></option>
+		<option value="Support Forum"><?php esc_html_e( 'Support Forum', 'wpkcs' ); ?></option>
+		<option value="Meetup"><?php esc_html_e( 'Meetup Participation', 'wpkcs' ); ?></option>
+		<option value="Documentation"><?php esc_html_e( 'Documentation Contribution', 'wpkcs' ); ?></option>
+		<option value="Learn WordPress"><?php esc_html_e( 'Learn WordPress', 'wpkcs' ); ?></option>
+		<option value="Code Contribution"><?php esc_html_e( 'Code Contribution', 'wpkcs' ); ?></option>
 	</select>
-
-	<input type="text" name="wpkcs_contribution_title" placeholder="Contribution Title" >
-
-	<input type="url" name="wpkcs_contribution_link" placeholder="Contribution Link" >
-
-	<input type="text" name="wpkcs_time_spent" placeholder="Estimated Time Spent" required>
-
-	<input type="date" value="<?= date("Y-m-d") ?>" name="wpkcs_date" required>
-
+	<input type="text" name="wpkcs_contribution_title" placeholder="<?php esc_attr_e( 'Contribution Title', 'wpkcs' ); ?>">
+	<input type="url" name="wpkcs_contribution_link" placeholder="<?php esc_attr_e( 'Contribution Link', 'wpkcs' ); ?>">
+	<input type="text" name="wpkcs_time_spent" placeholder="<?php esc_attr_e( 'Estimated Time Spent', 'wpkcs' ); ?>" required>
+	<input type="date" value="<?php echo esc_attr( current_time( 'Y-m-d' ) ); ?>" name="wpkcs_date" required>
 	<input type="file" name="wpkcs_screenshot">
-
 	<label>
 		<input type="checkbox" name="wpkcs_confirmation" value="1" required>
-		I agree that my name and contribution details may be publicly shared.
+		<?php esc_html_e( 'I agree that my name and contribution details may be publicly shared.', 'wpkcs' ); ?>
 	</label>
-
 	<button type="submit" name="wpkcs_submit_form">
-		Submit Contribution
+		<?php esc_html_e( 'Submit Contribution', 'wpkcs' ); ?>
 	</button>
-
 </form>

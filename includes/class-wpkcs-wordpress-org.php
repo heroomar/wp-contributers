@@ -19,7 +19,7 @@ class WPKCS_WordPress_Org {
 		}
 
 		$response = wp_remote_get(
-			'https://profiles.wordpress.org/wp-json/wporg/v1/users/' . $username
+			'https://profiles.wordpress.org/wp-json/wporg/v1/users/' . rawurlencode( $username )
 		);
 
 		if ( is_wp_error( $response ) ) {
@@ -31,11 +31,7 @@ class WPKCS_WordPress_Org {
 			true
 		);
 
-		if ( empty( $body ) ) {
-			return false;
-		}
-
-		if (!is_array($body) || !isset($body['name'])){
+		if ( empty( $body ) || ! is_array( $body ) || ! isset( $body['name'] ) ) {
 			return false;
 		}
 
@@ -48,53 +44,69 @@ class WPKCS_WordPress_Org {
 			)
 		);
 
-		$raw_profile = wp_remote_get(
-			'https://profiles.wordpress.org/' . $username
+		if ( is_wp_error( $id ) || ! $id ) {
+			return false;
+		}
+
+		$raw_profile_response = wp_remote_get(
+			'https://profiles.wordpress.org/' . rawurlencode( $username )
 		);
 
-		$raw_profile = explode("<h3>Bio</h3>",wp_remote_retrieve_body($raw_profile));
+		if ( ! is_wp_error( $raw_profile_response ) ) {
+			$raw_profile = explode(
+				'<h3>Bio</h3>',
+				wp_remote_retrieve_body( $raw_profile_response )
+			);
 
-		if (isset($raw_profile[1])){
-			$bio = explode("</div>",$raw_profile[1])[0];
-			$body['bio'] = strip_tags($bio);
+			if ( isset( $raw_profile[1] ) ) {
+				$bio = explode( '</div>', $raw_profile[1] )[0];
+				$body['bio'] = sanitize_text_field( wp_strip_all_tags( $bio ) );
+			}
 		}
 
-		foreach ($body as $key => $value) {
-			update_post_meta( $id, '_wpkcs_org_' . $key, $value );
+		foreach ( $body as $key => $value ) {
+			update_post_meta(
+				$id,
+				'_wpkcs_org_' . sanitize_key( $key ),
+				$value
+			);
 		}
-
 
 		$contributor = new WPKCS_Contributor( $id );
 
-		if ($avatar_url = $contributor->get_avatar()){
+		$avatar_url = $contributor->get_avatar();
+
+		if ( $avatar_url ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 			require_once ABSPATH . 'wp-admin/includes/media.php';
 			require_once ABSPATH . 'wp-admin/includes/image.php';
 
-			// Download image to temporary location.
-			$tmp = download_url( "https:".$avatar_url );
-            
+			$avatar_url = ( strpos( $avatar_url, '//' ) === 0 )
+				? 'https:' . $avatar_url
+				: $avatar_url;
 
-			if (!is_wp_error( $tmp )) {
+			$tmp = download_url( esc_url_raw( $avatar_url ) );
+
+			if ( ! is_wp_error( $tmp ) ) {
 				$file = array(
-					'name'     => rand(1111,9999)."_" . $contributor->get_username() . '.jpg',
+					'name'     => wp_unique_filename(
+						wp_upload_dir()['path'],
+						sanitize_file_name(
+							$contributor->get_username() . '.jpg'
+						)
+					),
 					'tmp_name' => $tmp,
 				);
 
-				// Upload to media library.
 				$attachment_id = media_handle_sideload( $file, $id );
 
-				// Remove temp file on failure.
 				if ( is_wp_error( $attachment_id ) ) {
-					@unlink( $tmp );
-					
+					wp_delete_file( $tmp );
 				} else {
-					// Set featured image.
 					set_post_thumbnail( $id, $attachment_id );
 				}
 			}
 		}
-		
 
 		return $body;
 	}

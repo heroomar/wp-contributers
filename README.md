@@ -1,4 +1,15 @@
-Shortcodes
+=== Wp Kitchen Contributers ===
+Contributors management and contribution tracking for WordPress communities.
+
+== Description ==
+
+Wp Kitchen Contributers is a WordPress plugin for collecting, managing, and showcasing community contributions.
+
+Contributors can submit their contributions through a frontend form. The plugin can fetch contributor profile information from WordPress.org and create contributor profiles inside WordPress.
+
+Administrators can review and manage contribution submissions from the WordPress dashboard.
+
+== Shortcodes ==
 
 Contribution Form
 
@@ -12,45 +23,110 @@ Display All Contributors
 
 [wpkcs_contributors]
 
+== Features ==
 
+* Frontend contribution submission form.
+* WordPress.org contributor profile integration.
+* Contributor avatar and bio support.
+* Contribution management through the WordPress dashboard.
+* Contribution categories and types.
+* Screenshot and proof upload support.
+* Contributor profile pages.
+* Contributor contribution history.
+* Admin contribution management.
+* Timeline-based contribution display.
 
-Plugin Description
+== Contribution Flow ==
 
-Wp Kitchen Contributers is a modern WordPress contributor management plugin designed to collect, manage, and showcase community contributions in a professional timeline-based profile system.
-
-The plugin allows contributors to submit their WordPress-related contributions through a secure frontend form. It automatically fetches contributor profile information from WordPress.org, including avatar and bio, and creates contributor profiles inside WordPress.
-
-Admins can review, manage, and verify submissions directly from the WordPress dashboard using custom post types, custom meta fields, and enhanced admin tables.
-
-Flow
 1. Contributor Submission
 
-User opens the frontend contribution form using shortcode:
+Users can submit contributions through the frontend contribution form.
 
-Contributor submits:
+The form collects:
 
-Name
-WordPress.org Username
-Contribution Type
-Contribution Link
-Time Spent
-Date
-Screenshot/Proof
+* Name
+* WordPress.org Username
+* Contribution Type
+* Contribution Link
+* Time Spent
+* Date
+* Screenshot or Proof
 
-Contribution is stored as pending review
+Submitted contributions are saved for review.
 
-After submission:
+2. Contributor Profile
 
-Plugin checks if contributor profile already exists
-If not:
-Fetches profile data from WordPress.org
-Fetches avatar
-Fetches bio
-Creates Contributor Profile CPT entry
+After submission, the plugin checks whether the contributor profile already exists.
 
-Admin Management
+If the profile does not exist, the plugin can:
 
-Admin can manage:
+* Fetch the contributor profile from WordPress.org.
+* Fetch the contributor avatar.
+* Fetch the contributor bio.
+* Create a contributor profile.
 
-Contribution Posts
-Contribution Type
+3. Admin Management
+
+Administrators can manage:
+
+* Contributor Profiles
+* Contribution Posts
+* Contribution Types
+* Contribution Links
+* Contribution Dates
+* Time Spent
+* Screenshots and Proof
+
+== Requirements ==
+
+* WordPress 6.0 or later
+* PHP 7.4 or later
+
+== Installation ==
+
+1. Upload the plugin to the `/wp-content/plugins/` directory.
+2. Activate the plugin through the WordPress Plugins screen.
+3. Add the required shortcodes to your WordPress pages.
+
+== Frequently Asked Questions ==
+
+= How do I display the contribution form? =
+
+Add the following shortcode to a page:
+
+[wpkcs_contribution_form]
+
+= How do I display a contributor profile? =
+
+Use:
+
+[wpkcs_profile profile="username"]
+
+Replace `username` with the contributor's WordPress.org username.
+
+= How do I display all contributors? =
+
+Use:
+
+[wpkcs_contributors]
+
+== License ==
+
+This plugin is licensed under the GPLv2 or later.
+
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+== Changelog ==
+
+= 1.0.0 =
+* Initial release.
+
+== Upgrade Notice ==
+
+= 1.0.0 =
+Initial release.
+
+Tested up to: 6.8
+Stable tag: 1.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
