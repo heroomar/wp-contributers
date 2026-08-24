@@ -19,7 +19,7 @@ class WPKCS_Meta_Boxes {
 	public function wpkcs_register_meta_boxes() {
 		add_meta_box(
 			'wpkcs_contribution_details',
-			__( 'Contribution Details', 'wp-contributers' ),
+			__( 'Contribution Details', 'contributors-team' ),
 			array( $this, 'wpkcs_contribution_meta_box_callback' ),
 			'wpkcs_contribution',
 			'normal',
@@ -41,7 +41,7 @@ class WPKCS_Meta_Boxes {
 		<table class="form-table">
 			<tr>
 				<th>
-					<label for="wpkcs_username"><?php esc_html_e( 'WordPress.org Username', 'wp-contributers' ); ?></label>
+					<label for="wpkcs_username"><?php esc_html_e( 'WordPress.org Username', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
@@ -55,39 +55,39 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_type"><?php esc_html_e( 'Contribution Type', 'wp-contributers' ); ?></label>
+					<label for="wpkcs_type"><?php esc_html_e( 'Contribution Type', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<select name="wpkcs_type" id="wpkcs_type" class="regular-text" required>
-						<option value=""><?php esc_html_e( 'Select Contribution Type', 'wp-contributers' ); ?></option>
+						<option value=""><?php esc_html_e( 'Select Contribution Type', 'contributors-team' ); ?></option>
 						<option value="Photos Contribution" <?php selected( $type, 'Photos Contribution' ); ?>>
-							<?php esc_html_e( 'Photos Contribution', 'wp-contributers' ); ?>
+							<?php esc_html_e( 'Photos Contribution', 'contributors-team' ); ?>
 						</option>
 						<option value="Translation" <?php selected( $type, 'Translation' ); ?>>
-							<?php esc_html_e( 'Translation', 'wp-contributers' ); ?>
+							<?php esc_html_e( 'Translation', 'contributors-team' ); ?>
 						</option>
 						<option value="Support Forum" <?php selected( $type, 'Support Forum' ); ?>>
-							<?php esc_html_e( 'Support Forum', 'wp-contributers' ); ?>
+							<?php esc_html_e( 'Support Forum', 'contributors-team' ); ?>
 						</option>
 						<option value="Meetup" <?php selected( $type, 'Meetup' ); ?>>
-							<?php esc_html_e( 'Meetup Participation', 'wp-contributers' ); ?>
+							<?php esc_html_e( 'Meetup Participation', 'contributors-team' ); ?>
 						</option>
 
 						<option value="Documentation" <?php selected( $type, 'Documentation' ); ?>>
-							<?php esc_html_e( 'Documentation Contribution', 'wp-contributers' ); ?>
+							<?php esc_html_e( 'Documentation Contribution', 'contributors-team' ); ?>
 						</option>
 						<option value="Learn WordPress" <?php selected( $type, 'Learn WordPress' ); ?>>
-							<?php esc_html_e( 'Learn WordPress', 'wp-contributers' ); ?>
+							<?php esc_html_e( 'Learn WordPress', 'contributors-team' ); ?>
 						</option>
 						<option value="Code Contribution" <?php selected( $type, 'Code Contribution' ); ?>>
-							<?php esc_html_e( 'Code Contribution', 'wp-contributers' ); ?>
+							<?php esc_html_e( 'Code Contribution', 'contributors-team' ); ?>
 						</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_link"><?php esc_html_e( 'Contribution Link', 'wp-contributers' ); ?></label>
+					<label for="wpkcs_link"><?php esc_html_e( 'Contribution Link', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
@@ -101,7 +101,7 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_time_spent"><?php esc_html_e( 'Time Spent', 'wp-contributers' ); ?></label>
+					<label for="wpkcs_time_spent"><?php esc_html_e( 'Time Spent', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
@@ -115,7 +115,7 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_date"><?php esc_html_e( 'Date', 'wp-contributers' ); ?></label>
+					<label for="wpkcs_date"><?php esc_html_e( 'Date', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
@@ -127,7 +127,7 @@ class WPKCS_Meta_Boxes {
 				</td>
 			</tr>
 			<tr>
-				<th><?php esc_html_e( 'Screenshot', 'wp-contributers' ); ?></th>
+				<th><?php esc_html_e( 'Screenshot', 'contributors-team' ); ?></th>
 				<td>
 					<?php
 					if ( $screenshot ) {
@@ -156,7 +156,7 @@ class WPKCS_Meta_Boxes {
 		<table class="form-table">
 			<tr>
 				<th>
-					<label for="wpkcs_wporg_username"><?php esc_html_e( 'WordPress.org Username', 'wp-contributers' ); ?></label>
+					<label for="wpkcs_wporg_username"><?php esc_html_e( 'WordPress.org Username', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
@@ -169,7 +169,7 @@ class WPKCS_Meta_Boxes {
 				</td>
 			</tr>
 			<tr>
-				<th><?php esc_html_e( 'Avatar', 'wp-contributers' ); ?></th>
+				<th><?php esc_html_e( 'Avatar', 'contributors-team' ); ?></th>
 				<td>
 					<?php if ( $avatar ) : ?>
 						<img
@@ -182,7 +182,7 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_bio"><?php esc_html_e( 'Bio', 'wp-contributers' ); ?></label>
+					<label for="wpkcs_bio"><?php esc_html_e( 'Bio', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<textarea
@@ -233,8 +233,8 @@ class WPKCS_Meta_Boxes {
 			( ! is_array( $wp_org_profile ) || ! isset( $wp_org_profile['name'] ) )
 		) {
 			wp_die(
-				esc_html__( 'WordPress.org profile could not be found. Please check the username.', 'wp-contributers' ),
-				esc_html__( 'Validation Error', 'wp-contributers' ),
+				esc_html__( 'WordPress.org profile could not be found. Please check the username.', 'contributors-team' ),
+				esc_html__( 'Validation Error', 'contributors-team' ),
 				array(
 					'back_link' => true,
 				)
@@ -249,16 +249,15 @@ class WPKCS_Meta_Boxes {
 
 		if (
 			isset( $_FILES['wpkcs_screenshot'] ) &&
+			is_array( $_FILES['wpkcs_screenshot'] ) &&
 			! empty( $_FILES['wpkcs_screenshot']['name'] )
 		) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 			require_once ABSPATH . 'wp-admin/includes/media.php';
 			require_once ABSPATH . 'wp-admin/includes/image.php';
 
-			$uploaded_file = $_FILES['wpkcs_screenshot'];
-
-			$file_name = isset( $uploaded_file['name'] )
-				? sanitize_file_name( $uploaded_file['name'] )
+			$file_name = isset( $_FILES['wpkcs_screenshot']['name'] )
+				? sanitize_file_name( wp_unslash( $_FILES['wpkcs_screenshot']['name'] ) )
 				: '';
 
 			$file_type = wp_check_filetype( $file_name );
@@ -271,7 +270,6 @@ class WPKCS_Meta_Boxes {
 			);
 
 			if ( in_array( $file_type['ext'], $allowed_types, true ) ) {
-
 				$attachment_id = media_handle_upload(
 					'wpkcs_screenshot',
 					$post_id
@@ -286,6 +284,7 @@ class WPKCS_Meta_Boxes {
 				}
 			}
 		}
+
 
 	}
 
@@ -330,8 +329,8 @@ class WPKCS_Meta_Boxes {
 	}
 
 	public function wpkcs_contributor_columns( $columns ) {
-		$columns['wpkcs_avatar']   = __( 'Avatar', 'wp-contributers' );
-		$columns['wpkcs_username'] = __( 'Username', 'wp-contributers' );
+		$columns['wpkcs_avatar']   = __( 'Avatar', 'contributors-team' );
+		$columns['wpkcs_username'] = __( 'Username', 'contributors-team' );
 
 		return $columns;
 	}
@@ -347,7 +346,7 @@ class WPKCS_Meta_Boxes {
 			$avatar = $avatar_urls[96] ?? '';
 
 			if ( $avatar ) {
-				echo '<img src="' . esc_url( $avatar ) . '" width="50" alt="' . esc_attr__( 'Avatar', 'wp-contributers' ) . '">';
+				echo '<img src="' . esc_url( $avatar ) . '" width="50" alt="' . esc_attr__( 'Avatar', 'contributors-team' ) . '">';
 			}
 		}
 
@@ -367,9 +366,9 @@ class WPKCS_Meta_Boxes {
 	}
 
 	public function wpkcs_contribution_columns( $columns ) {
-		$columns['wpkcs_type'] = __( 'Contribution Type', 'wp-contributers' );
-		$columns['wpkcs_user'] = __( 'Username', 'wp-contributers' );
-		$columns['wpkcs_date'] = __( 'Contribution Date', 'wp-contributers' );
+		$columns['wpkcs_type'] = __( 'Contribution Type', 'contributors-team' );
+		$columns['wpkcs_user'] = __( 'Username', 'contributors-team' );
+		$columns['wpkcs_date'] = __( 'Contribution Date', 'contributors-team' );
 
 		return $columns;
 	}

@@ -36,7 +36,7 @@ class WPKCS_Form_Handler {
 		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				__( 'Security verification failed.', 'wp-contributers' )
+				__( 'Security verification failed.', 'contributors-team' )
 			);
 		}
 
@@ -77,7 +77,7 @@ class WPKCS_Form_Handler {
 		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				__( 'Please fill all required fields.', 'wp-contributers' )
+				__( 'Please fill all required fields.', 'contributors-team' )
 			);
 		}
 
@@ -89,7 +89,7 @@ class WPKCS_Form_Handler {
 		) {
 			$this->wpkcs_redirect_with_message(
 				'error',
-				__( 'WordPress.org profile could not be found. Please check the username.', 'wp-contributers' )
+				__( 'WordPress.org profile could not be found. Please check the username.', 'contributors-team' )
 			);
 		}
 
@@ -158,7 +158,7 @@ class WPKCS_Form_Handler {
 				if ( ! in_array( $file_type['ext'], $allowed_types, true ) ) {
 					$this->wpkcs_redirect_with_message(
 						'error',
-						__( 'Invalid file type.', 'wp-contributers' )
+						__( 'Invalid file type.', 'contributors-team' )
 					);
 				}
 
@@ -186,7 +186,7 @@ class WPKCS_Form_Handler {
 
 		$this->wpkcs_redirect_with_message(
 			'success',
-			__( 'Contribution submitted successfully and is pending review.', 'wp-contributers' )
+			__( 'Contribution submitted successfully and is pending review.', 'contributors-team' )
 		);
 	}
 }

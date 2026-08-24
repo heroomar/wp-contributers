@@ -1,9 +1,15 @@
-=== Wp Kitchen Contributers ===
-Contributors management and contribution tracking for WordPress communities.
+=== Contributors Team ===
+Contributors: Pomy
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 1.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 == Description ==
 
-Wp Kitchen Contributers is a WordPress plugin for collecting, managing, and showcasing community contributions.
+
+Contributors Team is a WordPress plugin for collecting, managing, and showcasing community contributions.
 
 Contributors can submit their contributions through a frontend form. The plugin can fetch contributor profile information from WordPress.org and create contributor profiles inside WordPress.
 
@@ -125,8 +131,3 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 = 1.0.0 =
 Initial release.
-
-Tested up to: 6.8
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html

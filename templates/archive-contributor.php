@@ -1,8 +1,11 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 get_header();
 ?>
 
-<h1><?php esc_html_e( 'Contributors', 'wp-contributers' ); ?></h1>
+<h1><?php esc_html_e( 'Contributors', 'contributors-team' ); ?></h1>
 
 <div class="wpkcs-contributors-grid">
 
@@ -13,8 +16,8 @@ get_header();
 			the_post();
 
 			$post_id    = get_the_ID();
-			$contributor = new WPKCS_Contributor( $post_id );
-			$avatar      = $contributor->get_avatar();
+			$wpkcs_contributor = new WPKCS_Contributor( $post_id );
+			$wpkcs_avatar      = $wpkcs_contributor->get_avatar();
 			?>
 
 			<a
@@ -24,10 +27,10 @@ get_header();
 
 				<div class="wpkcs-card-avatar">
 
-					<?php if ( $avatar ) : ?>
+					<?php if ( $wpkcs_avatar ) : ?>
 
 						<img
-							src="<?php echo esc_url( $avatar ); ?>"
+							src="<?php echo esc_url( $wpkcs_avatar ); ?>"
 							alt="<?php the_title_attribute(); ?>"
 						>
 
@@ -61,7 +64,7 @@ get_header();
 
 					<div class="wpkcs-card-username">
 						@
-						<?php echo esc_html( $contributor->get_username() ); ?>
+						<?php echo esc_html( $wpkcs_contributor->get_username() ); ?>
 					</div>
 
 					<div class="wpkcs-card-footer">
@@ -69,10 +72,10 @@ get_header();
 						<span class="wpkcs-card-count">
 
 							<?php
-							echo esc_html( $contributor->get_cotribution_count() );
+							echo esc_html( $wpkcs_contributor->get_cotribution_count() );
 							?>
 
-							<?php esc_html_e( 'Contributions', 'wp-contributers' ); ?>
+							<?php esc_html_e( 'Contributions', 'contributors-team' ); ?>
 
 						</span>
 
@@ -90,7 +93,7 @@ get_header();
 
 	else :
 
-		echo '<p>' . esc_html__( 'No contributors found.', 'wp-contributers' ) . '</p>';
+		echo '<p>' . esc_html__( 'No contributors found.', 'contributors-team' ) . '</p>';
 
 	endif;
 	?>
