@@ -1,11 +1,25 @@
 <?php
 
+/**
+ * Prevent direct access to this file.
+ *
+ * @package Contributors_Team
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Registers and handles plugin shortcodes.
+ *
+ * @package Contributors_Team
+ */
 class WPKCS_Shortcodes {
 
+	/**
+	 * Initializes the plugin shortcodes.
+	 */
 	public function __construct() {
 
 		add_shortcode(
@@ -13,17 +27,13 @@ class WPKCS_Shortcodes {
 			array( $this, 'wpkcs_render_form' )
 		);
 
-		// add_shortcode(
-		// 	'wpkcs_profile',
-		// 	array( $this, 'wpkcs_render_profile' )
-		// );
-
-		// add_shortcode(
-		// 	'wpkcs_contributors',
-		// 	array( $this, 'wpkcs_render_contributors' )
-		// );
 	}
 
+	/**
+	 * Renders the contribution submission form.
+	 *
+	 * @return string The rendered contribution form.
+	 */
 	public function wpkcs_render_form() {
 
 		ob_start();
@@ -33,40 +43,5 @@ class WPKCS_Shortcodes {
 		return ob_get_clean();
 	}
 
-	// public function wpkcs_render_profile( $atts ) {
-
-	// 	$atts = shortcode_atts(
-	// 		array(
-	// 			'profile' => '',
-	// 		),
-	// 		$atts
-	// 	);
-
-	// 	ob_start();
-
-	// 	$profile = sanitize_text_field( $atts['profile'] );
-
-	// 	include WPKCS_PLUGIN_PATH . 'templates/contributor-profile.php';
-
-	// 	return ob_get_clean();
-	// }
-
-	// public function wpkcs_render_contributors() {
-
-	// 	$args = array(
-	// 		'post_type'      => 'wpkcs_contributor',
-	// 		'posts_per_page' => -1,
-	// 		'post_status'    => 'publish',
-	// 		'orderby'        => 'title',
-	// 		'order'          => 'ASC',
-	// 	);
-
-	// 	$query = new WP_Query( $args );
-
-	// 	ob_start();
-
-	// 	include WPKCS_PLUGIN_PATH . 'templates/contributors-list.php';
-
-	// 	return ob_get_clean();
-	// }
+	
 }

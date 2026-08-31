@@ -1,14 +1,37 @@
 <?php
+
+/**
+ * Prevent direct access to this file.
+ *
+ * @package Contributors_Team
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Handles frontend contribution form submissions.
+ *
+ * @package Contributors_Team
+ */
 class WPKCS_Form_Handler {
 
+	/**
+	 * Initializes the form submission handler.
+	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'wpkcs_handle_form_submission' ) );
 	}
 
+	/**
+	 * Redirects the user back to the referring page with a status message.
+	 *
+	 * @param string $status  The status of the submission.
+	 * @param string $message The message to display to the user.
+	 *
+	 * @return void
+	 */
 	private function wpkcs_redirect_with_message( $status, $message ) {
 		$redirect_url = add_query_arg(
 			array(
@@ -22,11 +45,22 @@ class WPKCS_Form_Handler {
 		exit;
 	}
 
+	/**
+	 * Processes the contribution form submission.
+	 *
+	 * Validates the submitted data, verifies the security nonce,
+	 * retrieves the WordPress.org profile, creates the contribution
+	 * post, processes the optional screenshot, and sends an
+	 * administrative notification email.
+	 *
+	 * @return void
+	 */
 	public function wpkcs_handle_form_submission() {
 		if ( ! isset( $_POST['wpkcs_submit_form'] ) ) {
 			return;
 		}
 
+		// Verify the form nonce before processing submitted data.
 		if (
 			! isset( $_POST['wpkcs_nonce'] ) ||
 			! wp_verify_nonce(
@@ -40,6 +74,7 @@ class WPKCS_Form_Handler {
 			);
 		}
 
+		// Sanitize submitted form fields.
 		$name = isset( $_POST['wpkcs_name'] )
 			? sanitize_text_field( wp_unslash( $_POST['wpkcs_name'] ) )
 			: '';
@@ -68,6 +103,7 @@ class WPKCS_Form_Handler {
 			? sanitize_text_field( wp_unslash( $_POST['wpkcs_date'] ) )
 			: '';
 
+		// Validate required fields.
 		if (
 			empty( $name ) ||
 			empty( $username ) ||
@@ -81,6 +117,7 @@ class WPKCS_Form_Handler {
 			);
 		}
 
+		// Verify that the submitted WordPress.org username exists.
 		$wp_org_profile = WPKCS_WordPress_Org::wpkcs_fetch_profile( $username );
 
 		if (
@@ -93,6 +130,7 @@ class WPKCS_Form_Handler {
 			);
 		}
 
+		// Create the contribution as pending review.
 		$post_id = wp_insert_post(
 			array(
 				'post_type'   => 'wpkcs_contribution',
@@ -109,6 +147,7 @@ class WPKCS_Form_Handler {
 			);
 		}
 
+		// Store the contribution metadata.
 		update_post_meta( $post_id, '_wpkcs_username', $username );
 		update_post_meta( $post_id, '_wpkcs_type', $type );
 		update_post_meta( $post_id, '_wpkcs_link', $link );
@@ -116,6 +155,7 @@ class WPKCS_Form_Handler {
 		update_post_meta( $post_id, '_wpkcs_time_spent', $time_spent );
 		update_post_meta( $post_id, '_wpkcs_date', $date );
 
+		// Process the optional contribution screenshot.
 		if (
 			isset( $_FILES['wpkcs_screenshot'] ) &&
 			is_array( $_FILES['wpkcs_screenshot'] )
@@ -155,6 +195,7 @@ class WPKCS_Form_Handler {
 					'webp',
 				);
 
+				// Validate the uploaded screenshot file type.
 				if ( ! in_array( $file_type['ext'], $allowed_types, true ) ) {
 					$this->wpkcs_redirect_with_message(
 						'error',
@@ -162,6 +203,7 @@ class WPKCS_Form_Handler {
 					);
 				}
 
+				// Add the uploaded screenshot to the WordPress Media Library.
 				$attachment_id = media_handle_sideload(
 					$uploaded_file,
 					$post_id
@@ -182,8 +224,10 @@ class WPKCS_Form_Handler {
 			}
 		}
 
+		// Notify the site administrator about the new contribution.
 		WPKCS_Mailer::wpkcs_send_admin_email( $post_id );
 
+		// Redirect the contributor after successful submission.
 		$this->wpkcs_redirect_with_message(
 			'success',
 			__( 'Contribution submitted successfully and is pending review.', 'contributors-team' )

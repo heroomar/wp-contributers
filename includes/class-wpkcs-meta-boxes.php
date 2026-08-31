@@ -1,10 +1,25 @@
 <?php
+
+/**
+ * Prevent direct access to this file.
+ *
+ * @package Contributors_Team
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Handles contribution and contributor meta boxes and admin list columns.
+ *
+ * @package Contributors_Team
+ */
 class WPKCS_Meta_Boxes {
 
+	/**
+	 * Initializes meta box, save, and admin column hooks.
+	 */
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'wpkcs_register_meta_boxes' ) );
 		add_action( 'save_post', array( $this, 'wpkcs_save_contribution_meta' ) );
@@ -16,6 +31,11 @@ class WPKCS_Meta_Boxes {
 		add_action( 'manage_wpkcs_contribution_posts_custom_column', array( $this, 'wpkcs_contribution_column_content' ), 10, 2 );
 	}
 
+	/**
+	 * Registers plugin meta boxes.
+	 *
+	 * @return void
+	 */
 	public function wpkcs_register_meta_boxes() {
 		add_meta_box(
 			'wpkcs_contribution_details',
@@ -27,6 +47,13 @@ class WPKCS_Meta_Boxes {
 		);
 	}
 
+	/**
+	 * Displays the contribution details meta box.
+	 *
+	 * @param WP_Post $post Current post object.
+	 *
+	 * @return void
+	 */
 	public function wpkcs_contribution_meta_box_callback( $post ) {
 		wp_nonce_field( 'wpkcs_save_contribution_meta', 'wpkcs_contribution_nonce' );
 
@@ -72,7 +99,6 @@ class WPKCS_Meta_Boxes {
 						<option value="Meetup" <?php selected( $type, 'Meetup' ); ?>>
 							<?php esc_html_e( 'Meetup Participation', 'contributors-team' ); ?>
 						</option>
-
 						<option value="Documentation" <?php selected( $type, 'Documentation' ); ?>>
 							<?php esc_html_e( 'Documentation Contribution', 'contributors-team' ); ?>
 						</option>
@@ -146,6 +172,13 @@ class WPKCS_Meta_Boxes {
 		<?php
 	}
 
+	/**
+	 * Displays the contributor details meta box.
+	 *
+	 * @param WP_Post $post Current post object.
+	 *
+	 * @return void
+	 */
 	public function wpkcs_contributor_meta_box_callback( $post ) {
 		wp_nonce_field( 'wpkcs_save_contributor_meta', 'wpkcs_contributor_nonce' );
 
@@ -197,6 +230,13 @@ class WPKCS_Meta_Boxes {
 		<?php
 	}
 
+	/**
+	 * Saves contribution metadata.
+	 *
+	 * @param int $post_id The ID of the post being saved.
+	 *
+	 * @return void
+	 */
 	public function wpkcs_save_contribution_meta( $post_id ) {
 		if (
 			! isset( $_POST['wpkcs_contribution_nonce'] ) ||
@@ -226,6 +266,7 @@ class WPKCS_Meta_Boxes {
 		$time_spent = isset( $_POST['wpkcs_time_spent'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkcs_time_spent'] ) ) : '';
 		$date       = isset( $_POST['wpkcs_date'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkcs_date'] ) ) : '';
 
+		// Verify that the submitted WordPress.org username exists.
 		$wp_org_profile = WPKCS_WordPress_Org::wpkcs_fetch_profile( $username );
 
 		if (
@@ -241,12 +282,14 @@ class WPKCS_Meta_Boxes {
 			);
 		}
 
+		// Save contribution metadata.
 		update_post_meta( $post_id, '_wpkcs_username', $username );
 		update_post_meta( $post_id, '_wpkcs_type', $type );
 		update_post_meta( $post_id, '_wpkcs_link', $link );
 		update_post_meta( $post_id, '_wpkcs_time_spent', $time_spent );
 		update_post_meta( $post_id, '_wpkcs_date', $date );
 
+		// Process the optional screenshot upload.
 		if (
 			isset( $_FILES['wpkcs_screenshot'] ) &&
 			is_array( $_FILES['wpkcs_screenshot'] ) &&
@@ -284,10 +327,15 @@ class WPKCS_Meta_Boxes {
 				}
 			}
 		}
-
-
 	}
 
+	/**
+	 * Saves contributor metadata.
+	 *
+	 * @param int $post_id The ID of the post being saved.
+	 *
+	 * @return void
+	 */
 	public function wpkcs_save_contributor_meta( $post_id ) {
 		if (
 			! isset( $_POST['wpkcs_contributor_nonce'] ) ||
@@ -328,6 +376,13 @@ class WPKCS_Meta_Boxes {
 		);
 	}
 
+	/**
+	 * Adds custom columns to the contributor admin list.
+	 *
+	 * @param array $columns Existing admin columns.
+	 *
+	 * @return array Modified admin columns.
+	 */
 	public function wpkcs_contributor_columns( $columns ) {
 		$columns['wpkcs_avatar']   = __( 'Avatar', 'contributors-team' );
 		$columns['wpkcs_username'] = __( 'Username', 'contributors-team' );
@@ -335,6 +390,14 @@ class WPKCS_Meta_Boxes {
 		return $columns;
 	}
 
+	/**
+	 * Displays content for custom contributor admin columns.
+	 *
+	 * @param string $column  Current column name.
+	 * @param int    $post_id Current post ID.
+	 *
+	 * @return void
+	 */
 	public function wpkcs_contributor_column_content( $column, $post_id ) {
 		if ( 'wpkcs_avatar' === $column ) {
 			$avatar_urls = get_post_meta(
@@ -365,6 +428,13 @@ class WPKCS_Meta_Boxes {
 		}
 	}
 
+	/**
+	 * Adds custom columns to the contribution admin list.
+	 *
+	 * @param array $columns Existing admin columns.
+	 *
+	 * @return array Modified admin columns.
+	 */
 	public function wpkcs_contribution_columns( $columns ) {
 		$columns['wpkcs_type'] = __( 'Contribution Type', 'contributors-team' );
 		$columns['wpkcs_user'] = __( 'Username', 'contributors-team' );
@@ -373,6 +443,14 @@ class WPKCS_Meta_Boxes {
 		return $columns;
 	}
 
+	/**
+	 * Displays content for custom contribution admin columns.
+	 *
+	 * @param string $column  Current column name.
+	 * @param int    $post_id Current post ID.
+	 *
+	 * @return void
+	 */
 	public function wpkcs_contribution_column_content( $column, $post_id ) {
 		if ( 'wpkcs_type' === $column ) {
 			echo esc_html(

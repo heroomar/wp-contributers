@@ -1,11 +1,27 @@
 <?php
 
+/**
+ * Prevent direct access to this file.
+ *
+ * @package Contributors_Team
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Loads the plugin classes and initializes their functionality.
+ *
+ * @package Contributors_Team
+ */
 class WPKCS_Loader {
 
+	/**
+	 * Loads the required plugin files and initializes plugin components.
+	 *
+	 * @return void
+	 */
 	public function run() {
 
 		require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-post-types.php';

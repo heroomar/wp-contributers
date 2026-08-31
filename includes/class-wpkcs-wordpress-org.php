@@ -1,13 +1,38 @@
 <?php
 
+/**
+ * Prevent direct access to this file.
+ *
+ * @package Contributors_Team
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Handles integration with WordPress.org contributor profiles.
+ *
+ * @package Contributors_Team
+ */
 class WPKCS_WordPress_Org {
 
+	/**
+	 * Fetches a WordPress.org contributor profile.
+	 *
+	 * If a contributor profile already exists locally, the method
+	 * returns true. Otherwise, it retrieves the profile from
+	 * WordPress.org, creates a contributor post, stores the profile
+	 * data, and attempts to download the contributor avatar.
+	 *
+	 * @param string $username WordPress.org username.
+	 *
+	 * @return array|bool Profile data on success, or true if the profile
+	 *                already exists; false on failure.
+	 */
 	public static function wpkcs_fetch_profile( $username ) {
 
+		// Check whether the contributor profile already exists locally.
 		$existing_query = new WP_Query(
 			array(
 				'post_type'              => 'wpkcs_contributor',
@@ -39,7 +64,7 @@ class WPKCS_WordPress_Org {
 			return true;
 		}
 
-
+		// Retrieve the contributor profile from the WordPress.org API.
 		$response = wp_remote_get(
 			'https://profiles.wordpress.org/wp-json/wporg/v1/users/' . rawurlencode( $username )
 		);
@@ -57,6 +82,7 @@ class WPKCS_WordPress_Org {
 			return false;
 		}
 
+		// Create a contributor profile post using the retrieved profile data.
 		$id = wp_insert_post(
 			array(
 				'post_type'    => 'wpkcs_contributor',
@@ -70,6 +96,7 @@ class WPKCS_WordPress_Org {
 			return false;
 		}
 
+		// Retrieve the public WordPress.org profile page to obtain additional profile information.
 		$raw_profile_response = wp_remote_get(
 			'https://profiles.wordpress.org/' . rawurlencode( $username )
 		);
@@ -81,11 +108,12 @@ class WPKCS_WordPress_Org {
 			);
 
 			if ( isset( $raw_profile[1] ) ) {
-				$bio = explode( '</div>', $raw_profile[1] )[0];
+				$bio        = explode( '</div>', $raw_profile[1] )[0];
 				$body['bio'] = sanitize_text_field( wp_strip_all_tags( $bio ) );
 			}
 		}
 
+		// Store the WordPress.org profile data as post metadata.
 		foreach ( $body as $key => $value ) {
 			update_post_meta(
 				$id,
@@ -98,6 +126,7 @@ class WPKCS_WordPress_Org {
 
 		$avatar_url = $contributor->get_avatar();
 
+		// Download and attach the contributor avatar to the profile.
 		if ( $avatar_url ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 			require_once ABSPATH . 'wp-admin/includes/media.php';

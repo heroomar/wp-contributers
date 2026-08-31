@@ -1,12 +1,34 @@
 <?php
+
+/**
+ * Prevent direct access to this file.
+ *
+ * @package Contributors_Team
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Represents a contributor and provides access to contributor data.
+ *
+ * @package Contributors_Team
+ */
 class WPKCS_Contributor {
 
+	/**
+	 * Contributor post ID.
+	 *
+	 * @var int|null
+	 */
 	protected $post_id = null;
 
+	/**
+	 * Initializes the contributor object.
+	 *
+	 * @param int $id Contributor post ID.
+	 */
 	public function __construct( $id ) {
 		$this->post_id = absint( $id );
 	}
@@ -17,7 +39,7 @@ class WPKCS_Contributor {
 	 * @param string $url  The original URL.
 	 * @param int    $size The new size value.
 	 *
-	 * @return string
+	 * @return string Updated URL.
 	 */
 	private function update_avatar_size( $url, $size = 350 ) {
 		if ( empty( $url ) ) {
@@ -33,7 +55,7 @@ class WPKCS_Contributor {
 
 		parse_str( $parts['query'], $query );
 
-		$query['s'] = absint( $size );
+		$query['s']    = absint( $size );
 		$parts['query'] = http_build_query( $query );
 
 		$new_url = ( isset( $parts['scheme'] ) ? $parts['scheme'] . '://' : '' )
@@ -46,6 +68,11 @@ class WPKCS_Contributor {
 		return esc_url( $new_url );
 	}
 
+	/**
+	 * Get the contributor username.
+	 *
+	 * @return string Contributor username.
+	 */
 	public function get_username() {
 		return get_post_meta(
 			$this->post_id,
@@ -54,6 +81,13 @@ class WPKCS_Contributor {
 		);
 	}
 
+	/**
+	 * Get the contributor avatar URL.
+	 *
+	 * @param int $size Requested avatar size.
+	 *
+	 * @return string Contributor avatar URL.
+	 */
 	public function get_avatar( $size = 350 ) {
 		$avatar_urls = get_post_meta(
 			$this->post_id,
@@ -66,6 +100,11 @@ class WPKCS_Contributor {
 		return $this->update_avatar_size( $url, $size );
 	}
 
+	/**
+	 * Get the contributor biography.
+	 *
+	 * @return string Contributor biography.
+	 */
 	public function get_bio() {
 		return get_post_meta(
 			$this->post_id,
@@ -74,6 +113,11 @@ class WPKCS_Contributor {
 		);
 	}
 
+	/**
+	 * Get the contributor's full name.
+	 *
+	 * @return string Contributor full name.
+	 */
 	public function full_name() {
 		return get_post_meta(
 			$this->post_id,
@@ -82,12 +126,17 @@ class WPKCS_Contributor {
 		);
 	}
 
+	/**
+	 * Get the total number of contributions for the contributor.
+	 *
+	 * @return int Number of contributions.
+	 */
 	public function get_cotribution_count() {
 		$contributions = new WP_Query(
 			array(
 				'post_type'      => 'wpkcs_contribution',
 				'posts_per_page' => -1,
-				'fields'          => 'ids',
+				'fields'         => 'ids',
 				'meta_query'     => array(
 					array(
 						'key'   => '_wpkcs_username',
@@ -100,16 +149,23 @@ class WPKCS_Contributor {
 		return absint( $contributions->found_posts );
 	}
 
+	/**
+	 * Get the contributor's recent contributions grouped by type.
+	 *
+	 * @param int $posts_per_page Number of contributions to retrieve per type.
+	 *
+	 * @return array Contributor contributions grouped by type.
+	 */
 	public function get_user_contributions( $posts_per_page = 5 ) {
 		$types = array(
-			'Code Contribution'    => __( 'CODE', 'contributors-team' ),
-			'Learn WordPress'      => __( 'LEARN', 'contributors-team' ),
-			'Meetup'               => __( 'MEETUPS', 'contributors-team' ),
-			'Photos Contribution'  => __( 'PHOTOS', 'contributors-team' ),
-			'Translation'          => __( 'TRANSLATIONS', 'contributors-team' ),
-			'Support Forum'        => __( 'SUPPORT FORUM', 'contributors-team' ),
-			'Documentation'        => __( 'DOCUMENTATION', 'contributors-team' ),
-			'Other'                => __( 'OTHER', 'contributors-team' ),
+			'Code Contribution'   => __( 'CODE', 'contributors-team' ),
+			'Learn WordPress'     => __( 'LEARN', 'contributors-team' ),
+			'Meetup'              => __( 'MEETUPS', 'contributors-team' ),
+			'Photos Contribution' => __( 'PHOTOS', 'contributors-team' ),
+			'Translation'         => __( 'TRANSLATIONS', 'contributors-team' ),
+			'Support Forum'       => __( 'SUPPORT FORUM', 'contributors-team' ),
+			'Documentation'       => __( 'DOCUMENTATION', 'contributors-team' ),
+			'Other'               => __( 'OTHER', 'contributors-team' ),
 		);
 
 		$contributions = array();
