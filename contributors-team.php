@@ -4,7 +4,7 @@
  * Plugin URI: https://wpkitchen.com
  * Description: Contributors management and contribution tracking for WordPress communities.
  * Version: 1.0.0
- * Author: Pomy
+ * Author: Abdul Rahman Pomy
  * Text Domain: contributors-team
  * Domain Path: /languages
  * License: GPL-2.0-or-later
