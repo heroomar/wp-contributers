@@ -21,13 +21,10 @@ Contribution Form
 
 [wpkct_contribution_form]
 
-Contributor Profile
 
-[wpkct_profile profile="username"]
+All Contributors
 
-Display All Contributors
-
-[wpkct_contributors]
+/contributors
 
 == Features ==
 

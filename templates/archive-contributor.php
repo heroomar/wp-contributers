@@ -7,7 +7,7 @@ get_header();
 
 <h1><?php esc_html_e( 'Contributors', 'contributors-team' ); ?></h1>
 
-<div class="wpkcs-contributors-grid">
+<div class="wpkct-contributors-grid">
 
 	<?php
 	if ( have_posts() ) :
@@ -21,11 +21,11 @@ get_header();
 			?>
 
 			<a
-				class="wpkcs-contributor-card"
+				class="wpkct-contributor-card"
 				href="<?php the_permalink(); ?>"
 			>
 
-				<div class="wpkcs-card-avatar">
+				<div class="wpkct-card-avatar">
 
 					<?php if ( $wpkct_avatar ) : ?>
 
@@ -36,7 +36,7 @@ get_header();
 
 					<?php else : ?>
 
-						<div class="wpkcs-card-placeholder">
+						<div class="wpkct-card-placeholder">
 
 							<?php
 							echo esc_html(
@@ -56,20 +56,20 @@ get_header();
 
 				</div>
 
-				<div class="wpkcs-card-content">
+				<div class="wpkct-card-content">
 
-					<h3 class="wpkcs-card-name">
+					<h3 class="wpkct-card-name">
 						<?php echo esc_html( get_post_meta( $post_id, '_wpkct_org_name', true ) ); ?>
 					</h3>
 
-					<div class="wpkcs-card-username">
+					<div class="wpkct-card-username">
 						@
 						<?php echo esc_html( $wpkct_contributor->get_username() ); ?>
 					</div>
 
-					<div class="wpkcs-card-footer">
+					<div class="wpkct-card-footer">
 
-						<span class="wpkcs-card-count">
+						<span class="wpkct-card-count">
 
 							<?php
 							echo esc_html( $wpkct_contributor->get_cotribution_count() );

@@ -63,38 +63,38 @@ $wpkct_args = array(
 $wpkct_query = new WP_Query( $wpkct_args );
 ?>
 
-<div class="wpkcs-profile-page">
-	<div class="wpkcs-profile-card">
-		<div class="wpkcs-profile-avatar">
+<div class="wpkct-profile-page">
+	<div class="wpkct-profile-card">
+		<div class="wpkct-profile-avatar">
 			<?php if ( $wpkct_avatar ) : ?>
 				<img
 					src="<?php echo esc_url( $wpkct_avatar ); ?>"
 					alt="<?php echo esc_attr( $wpkct_profile ); ?>"
 				>
 			<?php else : ?>
-				<div class="wpkcs-avatar-placeholder">
+				<div class="wpkct-avatar-placeholder">
 					<?php echo esc_html( strtoupper( substr( $wpkct_profile, 0, 1 ) ) ); ?>
 				</div>
 			<?php endif; ?>
 		</div>
-		<div class="wpkcs-profile-content">
-			<h1 class="wpkcs-profile-name">
+		<div class="wpkct-profile-content">
+			<h1 class="wpkct-profile-name">
 				<?php echo esc_html( $wpkct_profile ); ?>
 			</h1>
-			<div class="wpkcs-profile-role">
+			<div class="wpkct-profile-role">
 				<?php esc_html_e( 'WordPress Contributor', 'contributors-team' ); ?>
 			</div>
-			<div class="wpkcs-profile-bio">
+			<div class="wpkct-profile-bio">
 				<?php echo wp_kses_post( wpautop( $wpkct_bio ) ); ?>
 			</div>
 		</div>
 	</div>
-	<div class="wpkcs-timeline-wrapper">
-		<h2 class="wpkcs-section-title">
+	<div class="wpkct-timeline-wrapper">
+		<h2 class="wpkct-section-title">
 			<?php esc_html_e( 'Contributions', 'contributors-team' ); ?>
 		</h2>
 		<?php if ( $wpkct_query->have_posts() ) : ?>
-			<div class="wpkcs-timeline">
+			<div class="wpkct-timeline">
 				<?php
 				while ( $wpkct_query->have_posts() ) :
 					$wpkct_query->the_post();
@@ -123,25 +123,25 @@ $wpkct_query = new WP_Query( $wpkct_args );
 						true
 					);
 					?>
-					<div class="wpkcs-timeline-item">
-						<div class="wpkcs-timeline-dot"></div>
-						<div class="wpkcs-timeline-card">
-							<div class="wpkcs-timeline-header">
-								<span class="wpkcs-contribution-type">
+					<div class="wpkct-timeline-item">
+						<div class="wpkct-timeline-dot"></div>
+						<div class="wpkct-timeline-card">
+							<div class="wpkct-timeline-header">
+								<span class="wpkct-contribution-type">
 									<?php echo esc_html( $wpkct_type ); ?>
 								</span>
-								<span class="wpkcs-contribution-date">
+								<span class="wpkct-contribution-date">
 									<?php echo esc_html( date_i18n( 'F j, Y', strtotime( $wpkct_date ) ) ); ?>
 								</span>
 							</div>
-							<h3 class="wpkcs-contribution-title">
+							<h3 class="wpkct-contribution-title">
 								<?php the_title(); ?>
 							</h3>
-							<div class="wpkcs-contribution-content">
+							<div class="wpkct-contribution-content">
 								<?php the_content(); ?>
 							</div>
-							<div class="wpkcs-contribution-footer">
-								<span class="wpkcs-time-spent">
+							<div class="wpkct-contribution-footer">
+								<span class="wpkct-time-spent">
 									⏱ <?php echo esc_html( $wpkct_time ); ?>
 								</span>
 								<?php if ( $wpkct_link ) : ?>
@@ -149,7 +149,7 @@ $wpkct_query = new WP_Query( $wpkct_args );
 										href="<?php echo esc_url( $wpkct_link ); ?>"
 										target="_blank"
 										rel="noopener noreferrer"
-										class="wpkcs-view-link"
+										class="wpkct-view-link"
 									>
 										<?php esc_html_e( 'View Contribution →', 'contributors-team' ); ?>
 									</a>

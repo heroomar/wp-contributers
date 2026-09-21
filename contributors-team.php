@@ -21,8 +21,8 @@ define( 'WPKCT_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WPKCT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WPKCT_VERSION', '1.0.0' );
 
-require_once WPKCT_PLUGIN_PATH . 'includes/class-wpkcs-loader.php';
-require_once WPKCT_PLUGIN_PATH . 'includes/class-wpkcs-meta-boxes.php';
+require_once WPKCT_PLUGIN_PATH . 'includes/class-wpkct-loader.php';
+require_once WPKCT_PLUGIN_PATH . 'includes/class-wpkct-meta-boxes.php';
 
 new WPKCT_Meta_Boxes();
 

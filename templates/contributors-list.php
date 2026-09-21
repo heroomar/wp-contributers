@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="wpkcs-contributors-grid">
+<div class="wpkct-contributors-grid">
 	<?php
 	if ( $query->have_posts() ) :
 		while ( $query->have_posts() ) :
@@ -16,18 +16,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 			$wpkct_username    = $wpkct_contributor->get_username();
 			?>
 			<div
-				class="wpkcs-contributor-card"
+				class="wpkct-contributor-card"
 				style="cursor: pointer;"
 				onclick="window.location.href='<?php echo esc_url( '/contributions/?p=' . rawurlencode( $wpkct_username ) ); ?>'"
 			>
-				<div class="wpkcs-card-avatar">
+				<div class="wpkct-card-avatar">
 					<?php if ( $wpkct_avatar ) : ?>
 						<img
 							src="<?php echo esc_url( $wpkct_avatar ); ?>"
 							alt="<?php the_title_attribute(); ?>"
 						>
 					<?php else : ?>
-						<div class="wpkcs-card-placeholder">
+						<div class="wpkct-card-placeholder">
 							<?php
 							echo esc_html(
 								strtoupper(
@@ -42,15 +42,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</div>
 					<?php endif; ?>
 				</div>
-				<div class="wpkcs-card-content">
-					<h3 class="wpkcs-card-name">
+				<div class="wpkct-card-content">
+					<h3 class="wpkct-card-name">
 						<?php echo esc_html( get_post_meta( $post_id, '_wpkct_org_name', true ) ); ?>
 					</h3>
-					<div class="wpkcs-card-username">
+					<div class="wpkct-card-username">
 						@<?php echo esc_html( $wpkct_username ); ?>
 					</div>
-					<div class="wpkcs-card-footer">
-						<span class="wpkcs-card-count">
+					<div class="wpkct-card-footer">
+						<span class="wpkct-card-count">
 							<?php echo esc_html( $wpkct_contributor->get_cotribution_count() ); ?>
 							<?php esc_html_e( 'Contributions', 'contributors-team' ); ?>
 						</span>

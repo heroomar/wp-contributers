@@ -32,15 +32,15 @@ class WPKCT_Assets {
 	public function wpkct_enqueue_assets() {
 
 		wp_enqueue_style(
-			'wpkcs-style',
-			WPKCT_PLUGIN_URL . 'assets/css/wpkcs-style.css',
+			'wpkct-style',
+			WPKCT_PLUGIN_URL . 'assets/css/wpkct-style.css',
 			array(),
 			WPKCT_VERSION
 		);
 
 		wp_enqueue_script(
-			'wpkcs-script',
-			WPKCT_PLUGIN_URL . 'assets/js/wpkcs-script.js',
+			'wpkct-script',
+			WPKCT_PLUGIN_URL . 'assets/js/wpkct-script.js',
 			array( 'jquery' ),
 			WPKCT_VERSION,
 			true

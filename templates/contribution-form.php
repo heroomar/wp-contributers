@@ -8,7 +8,7 @@ $wpkct_message = filter_input( INPUT_GET, 'message', FILTER_SANITIZE_FULL_SPECIA
 
 if ( 'success' === $wpkct_status ) {
 	?>
-	<div class="wpkcs-notice-success">
+	<div class="wpkct-notice-success">
 		<?php echo esc_html( $wpkct_message ); ?>
 	</div>
 	<?php
@@ -16,13 +16,13 @@ if ( 'success' === $wpkct_status ) {
 
 if ( 'error' === $wpkct_status ) {
 	?>
-	<div class="wpkcs-notice-error">
+	<div class="wpkct-notice-error">
 		<?php echo esc_html( $wpkct_message ); ?>
 	</div>
 	<?php
 }
 ?>
-<form method="post" enctype="multipart/form-data" class="wpkcs-form">
+<form method="post" enctype="multipart/form-data" class="wpkct-form">
 	<?php wp_nonce_field( 'wpkct_submit_contribution', 'wpkct_nonce' ); ?>
 	<input type="text" name="wpkct_name" placeholder="<?php esc_attr_e( 'Your Name', 'contributors-team' ); ?>" required>
 	<input type="text" name="wpkct_wporg_username" placeholder="<?php esc_attr_e( 'WordPress.org Username', 'contributors-team' ); ?>" required>
