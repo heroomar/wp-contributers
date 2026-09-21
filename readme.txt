@@ -1,5 +1,5 @@
 === Contributors Team ===
-Contributors: wpkitchen pomypk, umarzaki
+Contributors: wpkitchen, pomypk, umarzaki
 Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
@@ -19,15 +19,15 @@ Administrators can review and manage contribution submissions from the WordPress
 
 Contribution Form
 
-[wpkcs_contribution_form]
+[wpkct_contribution_form]
 
 Contributor Profile
 
-[wpkcs_profile profile="username"]
+[wpkct_profile profile="username"]
 
 Display All Contributors
 
-[wpkcs_contributors]
+[wpkct_contributors]
 
 == Features ==
 
@@ -100,13 +100,13 @@ Administrators can manage:
 
 Add the following shortcode to a page:
 
-[wpkcs_contribution_form]
+[wpkct_contribution_form]
 
 = How do I display a contributor profile? =
 
 Use:
 
-[wpkcs_profile profile="username"]
+[wpkct_profile profile="username"]
 
 Replace `username` with the contributor's WordPress.org username.
 
@@ -114,7 +114,7 @@ Replace `username` with the contributor's WordPress.org username.
 
 Use:
 
-[wpkcs_contributors]
+[wpkct_contributors]
 
 == License ==
 

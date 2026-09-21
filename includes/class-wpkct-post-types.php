@@ -15,13 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package Contributors_Team
  */
-class WPKCS_Post_Types {
+class WPKCT_Post_Types {
 
 	/**
 	 * Initializes the post type registration and editor form hooks.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'wpkcs_register_post_types' ) );
+		add_action( 'init', array( $this, 'wpkct_register_post_types' ) );
 
 		add_action(
 			'post_edit_form_tag',
@@ -36,13 +36,13 @@ class WPKCS_Post_Types {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_register_post_types() {
+	public function wpkct_register_post_types() {
 
 		/**
 		 * Register the contribution post type.
 		 */
 		register_post_type(
-			'wpkcs_contribution',
+			'wpkct_contribution',
 			array(
 				'labels' => array(
 					'name'               => 'Contributions',
@@ -69,7 +69,7 @@ class WPKCS_Post_Types {
 		 * Register the contributor profile post type.
 		 */
 		register_post_type(
-			'wpkcs_contributor',
+			'wpkct_contributor',
 			array(
 				'labels' => array(
 					'name'               => 'Contributor Profiles',

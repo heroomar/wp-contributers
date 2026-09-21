@@ -17,18 +17,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPKCS_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'WPKCS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'WPKCS_VERSION', '1.0.0' );
+define( 'WPKCT_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'WPKCT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'WPKCT_VERSION', '1.0.0' );
 
-require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-loader.php';
-require_once WPKCS_PLUGIN_PATH . 'includes/class-wpkcs-meta-boxes.php';
+require_once WPKCT_PLUGIN_PATH . 'includes/class-wpkcs-loader.php';
+require_once WPKCT_PLUGIN_PATH . 'includes/class-wpkcs-meta-boxes.php';
 
-new WPKCS_Meta_Boxes();
+new WPKCT_Meta_Boxes();
 
-function wpkcs_run_plugin() {
-	$plugin = new WPKCS_Loader();
+function wpkct_run_plugin() {
+	$plugin = new WPKCT_Loader();
 	$plugin->run();
 }
 
-wpkcs_run_plugin();
+wpkct_run_plugin();

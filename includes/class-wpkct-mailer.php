@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package Contributors_Team
  */
-class WPKCS_Mailer {
+class WPKCT_Mailer {
 
 	/**
 	 * Sends an email notification to the site administrator
@@ -25,7 +25,7 @@ class WPKCS_Mailer {
 	 *
 	 * @return bool Whether the email was successfully sent.
 	 */
-	public static function wpkcs_send_admin_email( $post_id ) {
+	public static function wpkct_send_admin_email( $post_id ) {
 
 		$admin_email = get_option( 'admin_email' );
 

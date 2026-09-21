@@ -15,20 +15,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package Contributors_Team
  */
-class WPKCS_Meta_Boxes {
+class WPKCT_Meta_Boxes {
 
 	/**
 	 * Initializes meta box, save, and admin column hooks.
 	 */
 	public function __construct() {
-		add_action( 'add_meta_boxes', array( $this, 'wpkcs_register_meta_boxes' ) );
-		add_action( 'save_post', array( $this, 'wpkcs_save_contribution_meta' ) );
+		add_action( 'add_meta_boxes', array( $this, 'wpkct_register_meta_boxes' ) );
+		add_action( 'save_post', array( $this, 'wpkct_save_contribution_meta' ) );
 
-		add_filter( 'manage_wpkcs_contributor_posts_columns', array( $this, 'wpkcs_contributor_columns' ) );
-		add_action( 'manage_wpkcs_contributor_posts_custom_column', array( $this, 'wpkcs_contributor_column_content' ), 10, 2 );
+		add_filter( 'manage_wpkct_contributor_posts_columns', array( $this, 'wpkct_contributor_columns' ) );
+		add_action( 'manage_wpkct_contributor_posts_custom_column', array( $this, 'wpkct_contributor_column_content' ), 10, 2 );
 
-		add_filter( 'manage_wpkcs_contribution_posts_columns', array( $this, 'wpkcs_contribution_columns' ) );
-		add_action( 'manage_wpkcs_contribution_posts_custom_column', array( $this, 'wpkcs_contribution_column_content' ), 10, 2 );
+		add_filter( 'manage_wpkct_contribution_posts_columns', array( $this, 'wpkct_contribution_columns' ) );
+		add_action( 'manage_wpkct_contribution_posts_custom_column', array( $this, 'wpkct_contribution_column_content' ), 10, 2 );
 	}
 
 	/**
@@ -36,12 +36,12 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_register_meta_boxes() {
+	public function wpkct_register_meta_boxes() {
 		add_meta_box(
-			'wpkcs_contribution_details',
+			'wpkct_contribution_details',
 			__( 'Contribution Details', 'contributors-team' ),
-			array( $this, 'wpkcs_contribution_meta_box_callback' ),
-			'wpkcs_contribution',
+			array( $this, 'wpkct_contribution_meta_box_callback' ),
+			'wpkct_contribution',
 			'normal',
 			'default'
 		);
@@ -54,27 +54,27 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_contribution_meta_box_callback( $post ) {
-		wp_nonce_field( 'wpkcs_save_contribution_meta', 'wpkcs_contribution_nonce' );
+	public function wpkct_contribution_meta_box_callback( $post ) {
+		wp_nonce_field( 'wpkct_save_contribution_meta', 'wpkct_contribution_nonce' );
 
-		$username   = get_post_meta( $post->ID, '_wpkcs_username', true );
-		$type       = get_post_meta( $post->ID, '_wpkcs_type', true );
-		$link       = get_post_meta( $post->ID, '_wpkcs_link', true );
-		$time       = get_post_meta( $post->ID, '_wpkcs_time_spent', true );
-		$date       = get_post_meta( $post->ID, '_wpkcs_date', true );
-		$screenshot = get_post_meta( $post->ID, '_wpkcs_screenshot', true );
+		$username   = get_post_meta( $post->ID, '_wpkct_username', true );
+		$type       = get_post_meta( $post->ID, '_wpkct_type', true );
+		$link       = get_post_meta( $post->ID, '_wpkct_link', true );
+		$time       = get_post_meta( $post->ID, '_wpkct_time_spent', true );
+		$date       = get_post_meta( $post->ID, '_wpkct_date', true );
+		$screenshot = get_post_meta( $post->ID, '_wpkct_screenshot', true );
 		?>
 
 		<table class="form-table">
 			<tr>
 				<th>
-					<label for="wpkcs_username"><?php esc_html_e( 'WordPress.org Username', 'contributors-team' ); ?></label>
+					<label for="wpkct_username"><?php esc_html_e( 'WordPress.org Username', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
 						type="text"
-						id="wpkcs_username"
-						name="wpkcs_username"
+						id="wpkct_username"
+						name="wpkct_username"
 						value="<?php echo esc_attr( $username ); ?>"
 						class="regular-text"
 					>
@@ -82,10 +82,10 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_type"><?php esc_html_e( 'Contribution Type', 'contributors-team' ); ?></label>
+					<label for="wpkct_type"><?php esc_html_e( 'Contribution Type', 'contributors-team' ); ?></label>
 				</th>
 				<td>
-					<select name="wpkcs_type" id="wpkcs_type" class="regular-text" required>
+					<select name="wpkct_type" id="wpkct_type" class="regular-text" required>
 						<option value=""><?php esc_html_e( 'Select Contribution Type', 'contributors-team' ); ?></option>
 						<option value="Photos Contribution" <?php selected( $type, 'Photos Contribution' ); ?>>
 							<?php esc_html_e( 'Photos Contribution', 'contributors-team' ); ?>
@@ -113,13 +113,13 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_link"><?php esc_html_e( 'Contribution Link', 'contributors-team' ); ?></label>
+					<label for="wpkct_link"><?php esc_html_e( 'Contribution Link', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
 						type="url"
-						id="wpkcs_link"
-						name="wpkcs_link"
+						id="wpkct_link"
+						name="wpkct_link"
 						value="<?php echo esc_attr( $link ); ?>"
 						class="regular-text"
 					>
@@ -127,13 +127,13 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_time_spent"><?php esc_html_e( 'Time Spent', 'contributors-team' ); ?></label>
+					<label for="wpkct_time_spent"><?php esc_html_e( 'Time Spent', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
 						type="text"
-						id="wpkcs_time_spent"
-						name="wpkcs_time_spent"
+						id="wpkct_time_spent"
+						name="wpkct_time_spent"
 						value="<?php echo esc_attr( $time ); ?>"
 						class="regular-text"
 					>
@@ -141,13 +141,13 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_date"><?php esc_html_e( 'Date', 'contributors-team' ); ?></label>
+					<label for="wpkct_date"><?php esc_html_e( 'Date', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
 						type="date"
-						id="wpkcs_date"
-						name="wpkcs_date"
+						id="wpkct_date"
+						name="wpkct_date"
 						value="<?php echo esc_attr( $date ); ?>"
 					>
 				</td>
@@ -163,7 +163,7 @@ class WPKCS_Meta_Boxes {
 					<br><br>
 					<input
 						type="file"
-						name="wpkcs_screenshot"
+						name="wpkct_screenshot"
 						accept=".jpg,.jpeg,.png,.webp"
 					>
 				</td>
@@ -179,23 +179,23 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_contributor_meta_box_callback( $post ) {
-		wp_nonce_field( 'wpkcs_save_contributor_meta', 'wpkcs_contributor_nonce' );
+	public function wpkct_contributor_meta_box_callback( $post ) {
+		wp_nonce_field( 'wpkct_save_contributor_meta', 'wpkct_contributor_nonce' );
 
-		$contributor = new WPKCS_Contributor( $post->ID );
+		$contributor = new WPKCT_Contributor( $post->ID );
 		$avatar      = $contributor->get_avatar();
 		?>
 
 		<table class="form-table">
 			<tr>
 				<th>
-					<label for="wpkcs_wporg_username"><?php esc_html_e( 'WordPress.org Username', 'contributors-team' ); ?></label>
+					<label for="wpkct_wporg_username"><?php esc_html_e( 'WordPress.org Username', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<input
 						type="text"
-						id="wpkcs_wporg_username"
-						name="wpkcs_wporg_username"
+						id="wpkct_wporg_username"
+						name="wpkct_wporg_username"
 						value="<?php echo esc_attr( $contributor->get_username() ); ?>"
 						class="regular-text"
 					>
@@ -215,12 +215,12 @@ class WPKCS_Meta_Boxes {
 			</tr>
 			<tr>
 				<th>
-					<label for="wpkcs_bio"><?php esc_html_e( 'Bio', 'contributors-team' ); ?></label>
+					<label for="wpkct_bio"><?php esc_html_e( 'Bio', 'contributors-team' ); ?></label>
 				</th>
 				<td>
 					<textarea
-						name="wpkcs_bio"
-						id="wpkcs_bio"
+						name="wpkct_bio"
+						id="wpkct_bio"
 						rows="6"
 						class="large-text"
 					><?php echo esc_textarea( $contributor->get_bio() ); ?></textarea>
@@ -237,12 +237,12 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_save_contribution_meta( $post_id ) {
+	public function wpkct_save_contribution_meta( $post_id ) {
 		if (
-			! isset( $_POST['wpkcs_contribution_nonce'] ) ||
+			! isset( $_POST['wpkct_contribution_nonce'] ) ||
 			! wp_verify_nonce(
-				sanitize_text_field( wp_unslash( $_POST['wpkcs_contribution_nonce'] ) ),
-				'wpkcs_save_contribution_meta'
+				sanitize_text_field( wp_unslash( $_POST['wpkct_contribution_nonce'] ) ),
+				'wpkct_save_contribution_meta'
 			)
 		) {
 			return;
@@ -252,7 +252,7 @@ class WPKCS_Meta_Boxes {
 			return;
 		}
 
-		if ( 'wpkcs_contribution' !== get_post_type( $post_id ) ) {
+		if ( 'wpkct_contribution' !== get_post_type( $post_id ) ) {
 			return;
 		}
 
@@ -260,14 +260,14 @@ class WPKCS_Meta_Boxes {
 			return;
 		}
 
-		$username   = isset( $_POST['wpkcs_username'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkcs_username'] ) ) : '';
-		$type       = isset( $_POST['wpkcs_type'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkcs_type'] ) ) : '';
-		$link       = isset( $_POST['wpkcs_link'] ) ? esc_url_raw( wp_unslash( $_POST['wpkcs_link'] ) ) : '';
-		$time_spent = isset( $_POST['wpkcs_time_spent'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkcs_time_spent'] ) ) : '';
-		$date       = isset( $_POST['wpkcs_date'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkcs_date'] ) ) : '';
+		$username   = isset( $_POST['wpkct_username'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkct_username'] ) ) : '';
+		$type       = isset( $_POST['wpkct_type'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkct_type'] ) ) : '';
+		$link       = isset( $_POST['wpkct_link'] ) ? esc_url_raw( wp_unslash( $_POST['wpkct_link'] ) ) : '';
+		$time_spent = isset( $_POST['wpkct_time_spent'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkct_time_spent'] ) ) : '';
+		$date       = isset( $_POST['wpkct_date'] ) ? sanitize_text_field( wp_unslash( $_POST['wpkct_date'] ) ) : '';
 
 		// Verify that the submitted WordPress.org username exists.
-		$wp_org_profile = WPKCS_WordPress_Org::wpkcs_fetch_profile( $username );
+		$wp_org_profile = WPKCT_WordPress_Org::wpkct_fetch_profile( $username );
 
 		if (
 			true !== $wp_org_profile &&
@@ -283,24 +283,24 @@ class WPKCS_Meta_Boxes {
 		}
 
 		// Save contribution metadata.
-		update_post_meta( $post_id, '_wpkcs_username', $username );
-		update_post_meta( $post_id, '_wpkcs_type', $type );
-		update_post_meta( $post_id, '_wpkcs_link', $link );
-		update_post_meta( $post_id, '_wpkcs_time_spent', $time_spent );
-		update_post_meta( $post_id, '_wpkcs_date', $date );
+		update_post_meta( $post_id, '_wpkct_username', $username );
+		update_post_meta( $post_id, '_wpkct_type', $type );
+		update_post_meta( $post_id, '_wpkct_link', $link );
+		update_post_meta( $post_id, '_wpkct_time_spent', $time_spent );
+		update_post_meta( $post_id, '_wpkct_date', $date );
 
 		// Process the optional screenshot upload.
 		if (
-			isset( $_FILES['wpkcs_screenshot'] ) &&
-			is_array( $_FILES['wpkcs_screenshot'] ) &&
-			! empty( $_FILES['wpkcs_screenshot']['name'] )
+			isset( $_FILES['wpkct_screenshot'] ) &&
+			is_array( $_FILES['wpkct_screenshot'] ) &&
+			! empty( $_FILES['wpkct_screenshot']['name'] )
 		) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 			require_once ABSPATH . 'wp-admin/includes/media.php';
 			require_once ABSPATH . 'wp-admin/includes/image.php';
 
-			$file_name = isset( $_FILES['wpkcs_screenshot']['name'] )
-				? sanitize_file_name( wp_unslash( $_FILES['wpkcs_screenshot']['name'] ) )
+			$file_name = isset( $_FILES['wpkct_screenshot']['name'] )
+				? sanitize_file_name( wp_unslash( $_FILES['wpkct_screenshot']['name'] ) )
 				: '';
 
 			$file_type = wp_check_filetype( $file_name );
@@ -314,14 +314,14 @@ class WPKCS_Meta_Boxes {
 
 			if ( in_array( $file_type['ext'], $allowed_types, true ) ) {
 				$attachment_id = media_handle_upload(
-					'wpkcs_screenshot',
+					'wpkct_screenshot',
 					$post_id
 				);
 
 				if ( ! is_wp_error( $attachment_id ) ) {
 					update_post_meta(
 						$post_id,
-						'_wpkcs_screenshot',
+						'_wpkct_screenshot',
 						$attachment_id
 					);
 				}
@@ -336,12 +336,12 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_save_contributor_meta( $post_id ) {
+	public function wpkct_save_contributor_meta( $post_id ) {
 		if (
-			! isset( $_POST['wpkcs_contributor_nonce'] ) ||
+			! isset( $_POST['wpkct_contributor_nonce'] ) ||
 			! wp_verify_nonce(
-				sanitize_text_field( wp_unslash( $_POST['wpkcs_contributor_nonce'] ) ),
-				'wpkcs_save_contributor_meta'
+				sanitize_text_field( wp_unslash( $_POST['wpkct_contributor_nonce'] ) ),
+				'wpkct_save_contributor_meta'
 			)
 		) {
 			return;
@@ -351,7 +351,7 @@ class WPKCS_Meta_Boxes {
 			return;
 		}
 
-		if ( 'wpkcs_contributor' !== get_post_type( $post_id ) ) {
+		if ( 'wpkct_contributor' !== get_post_type( $post_id ) ) {
 			return;
 		}
 
@@ -361,17 +361,17 @@ class WPKCS_Meta_Boxes {
 
 		update_post_meta(
 			$post_id,
-			'_wpkcs_wporg_username',
+			'_wpkct_wporg_username',
 			sanitize_text_field(
-				wp_unslash( $_POST['wpkcs_wporg_username'] ?? '' )
+				wp_unslash( $_POST['wpkct_wporg_username'] ?? '' )
 			)
 		);
 
 		update_post_meta(
 			$post_id,
-			'_wpkcs_bio',
+			'_wpkct_bio',
 			wp_kses_post(
-				wp_unslash( $_POST['wpkcs_bio'] ?? '' )
+				wp_unslash( $_POST['wpkct_bio'] ?? '' )
 			)
 		);
 	}
@@ -383,9 +383,9 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return array Modified admin columns.
 	 */
-	public function wpkcs_contributor_columns( $columns ) {
-		$columns['wpkcs_avatar']   = __( 'Avatar', 'contributors-team' );
-		$columns['wpkcs_username'] = __( 'Username', 'contributors-team' );
+	public function wpkct_contributor_columns( $columns ) {
+		$columns['wpkct_avatar']   = __( 'Avatar', 'contributors-team' );
+		$columns['wpkct_username'] = __( 'Username', 'contributors-team' );
 
 		return $columns;
 	}
@@ -398,11 +398,11 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_contributor_column_content( $column, $post_id ) {
-		if ( 'wpkcs_avatar' === $column ) {
+	public function wpkct_contributor_column_content( $column, $post_id ) {
+		if ( 'wpkct_avatar' === $column ) {
 			$avatar_urls = get_post_meta(
 				$post_id,
-				'_wpkcs_org_avatar_urls',
+				'_wpkct_org_avatar_urls',
 				true
 			);
 
@@ -413,10 +413,10 @@ class WPKCS_Meta_Boxes {
 			}
 		}
 
-		if ( 'wpkcs_username' === $column ) {
+		if ( 'wpkct_username' === $column ) {
 			$link = get_post_meta(
 				$post_id,
-				'_wpkcs_org_link',
+				'_wpkct_org_link',
 				true
 			);
 
@@ -435,10 +435,10 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return array Modified admin columns.
 	 */
-	public function wpkcs_contribution_columns( $columns ) {
-		$columns['wpkcs_type'] = __( 'Contribution Type', 'contributors-team' );
-		$columns['wpkcs_user'] = __( 'Username', 'contributors-team' );
-		$columns['wpkcs_date'] = __( 'Contribution Date', 'contributors-team' );
+	public function wpkct_contribution_columns( $columns ) {
+		$columns['wpkct_type'] = __( 'Contribution Type', 'contributors-team' );
+		$columns['wpkct_user'] = __( 'Username', 'contributors-team' );
+		$columns['wpkct_date'] = __( 'Contribution Date', 'contributors-team' );
 
 		return $columns;
 	}
@@ -451,32 +451,32 @@ class WPKCS_Meta_Boxes {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_contribution_column_content( $column, $post_id ) {
-		if ( 'wpkcs_type' === $column ) {
+	public function wpkct_contribution_column_content( $column, $post_id ) {
+		if ( 'wpkct_type' === $column ) {
 			echo esc_html(
 				get_post_meta(
 					$post_id,
-					'_wpkcs_type',
+					'_wpkct_type',
 					true
 				)
 			);
 		}
 
-		if ( 'wpkcs_user' === $column ) {
+		if ( 'wpkct_user' === $column ) {
 			echo esc_html(
 				get_post_meta(
 					$post_id,
-					'_wpkcs_username',
+					'_wpkct_username',
 					true
 				)
 			);
 		}
 
-		if ( 'wpkcs_date' === $column ) {
+		if ( 'wpkct_date' === $column ) {
 			echo esc_html(
 				get_post_meta(
 					$post_id,
-					'_wpkcs_date',
+					'_wpkct_date',
 					true
 				)
 			);

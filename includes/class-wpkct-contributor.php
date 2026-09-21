@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package Contributors_Team
  */
-class WPKCS_Contributor {
+class WPKCT_Contributor {
 
 	/**
 	 * Contributor post ID.
@@ -76,7 +76,7 @@ class WPKCS_Contributor {
 	public function get_username() {
 		return get_post_meta(
 			$this->post_id,
-			'_wpkcs_org_slug',
+			'_wpkct_org_slug',
 			true
 		);
 	}
@@ -91,7 +91,7 @@ class WPKCS_Contributor {
 	public function get_avatar( $size = 350 ) {
 		$avatar_urls = get_post_meta(
 			$this->post_id,
-			'_wpkcs_org_avatar_urls',
+			'_wpkct_org_avatar_urls',
 			true
 		);
 
@@ -108,7 +108,7 @@ class WPKCS_Contributor {
 	public function get_bio() {
 		return get_post_meta(
 			$this->post_id,
-			'_wpkcs_org_bio',
+			'_wpkct_org_bio',
 			true
 		);
 	}
@@ -121,7 +121,7 @@ class WPKCS_Contributor {
 	public function full_name() {
 		return get_post_meta(
 			$this->post_id,
-			'_wpkcs_org_name',
+			'_wpkct_org_name',
 			true
 		);
 	}
@@ -134,12 +134,12 @@ class WPKCS_Contributor {
 	public function get_cotribution_count() {
 		$contributions = new WP_Query(
 			array(
-				'post_type'      => 'wpkcs_contribution',
+				'post_type'      => 'wpkct_contribution',
 				'posts_per_page' => -1,
 				'fields'         => 'ids',
 				'meta_query'     => array(
 					array(
-						'key'   => '_wpkcs_username',
+						'key'   => '_wpkct_username',
 						'value' => $this->get_username(),
 					),
 				),
@@ -179,20 +179,20 @@ class WPKCS_Contributor {
 
 			$query = new WP_Query(
 				array(
-					'post_type'      => 'wpkcs_contribution',
+					'post_type'      => 'wpkct_contribution',
 					'posts_per_page' => absint( $posts_per_page ),
-					'meta_key'       => '_wpkcs_date',
+					'meta_key'       => '_wpkct_date',
 					'orderby'        => 'meta_value',
 					'meta_type'      => 'DATE',
 					'order'          => 'DESC',
 					'meta_query'     => array(
 						'relation' => 'AND',
 						array(
-							'key'   => '_wpkcs_username',
+							'key'   => '_wpkct_username',
 							'value' => $this->get_username(),
 						),
 						array(
-							'key'   => '_wpkcs_type',
+							'key'   => '_wpkct_type',
 							'value' => $type,
 						),
 					),

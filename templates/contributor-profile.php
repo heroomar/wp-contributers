@@ -3,89 +3,89 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$wpkcs_profile = isset( $wpkcs_profile )
-	? sanitize_text_field( $wpkcs_profile )
+$wpkct_profile = isset( $wpkct_profile )
+	? sanitize_text_field( $wpkct_profile )
 	: '';
 
-$wpkcs_contributor_query = new WP_Query(
+$wpkct_contributor_query = new WP_Query(
 	array(
-		'post_type'              => 'wpkcs_contributor',
+		'post_type'              => 'wpkct_contributor',
 		'post_status'            => 'publish',
 		'posts_per_page'         => 1,
 		'no_found_rows'          => true,
 		'meta_query'             => array(
 			array(
-				'key'     => '_wpkcs_org_slug',
-				'value'   => $wpkcs_profile,
+				'key'     => '_wpkct_org_slug',
+				'value'   => $wpkct_profile,
 				'compare' => '=',
 			),
 		),
 	)
 );
 
-if ( ! $wpkcs_contributor_query->have_posts() ) {
+if ( ! $wpkct_contributor_query->have_posts() ) {
 	wp_reset_postdata();
 
 	echo '<p>' . esc_html__( 'No contributor found.', 'contributors-team' ) . '</p>';
 	return;
 }
 
-$wpkcs_contributor = $wpkcs_contributor_query->posts[0];
+$wpkct_contributor = $wpkct_contributor_query->posts[0];
 
 wp_reset_postdata();
 
-$wpkcs_avatar_urls = get_post_meta(
-	$wpkcs_contributor->ID,
-	'_wpkcs_org_avatar_urls',
+$wpkct_avatar_urls = get_post_meta(
+	$wpkct_contributor->ID,
+	'_wpkct_org_avatar_urls',
 	true
 );
 
-$wpkcs_avatar = is_array( $wpkcs_avatar_urls )
-	? ( $wpkcs_avatar_urls[96] ?? '' )
+$wpkct_avatar = is_array( $wpkct_avatar_urls )
+	? ( $wpkct_avatar_urls[96] ?? '' )
 	: '';
 
-$wpkcs_bio = $wpkcs_contributor->post_content;
+$wpkct_bio = $wpkct_contributor->post_content;
 
 
-$wpkcs_args = array(
-	'post_type'      => 'wpkcs_contribution',
+$wpkct_args = array(
+	'post_type'      => 'wpkct_contribution',
 	'posts_per_page' => -1,
 	'orderby'        => 'date',
 	'order'          => 'DESC',
 	'meta_query'     => array(
 		array(
-			'key'   => '_wpkcs_username',
-			'value' => $wpkcs_profile,
+			'key'   => '_wpkct_username',
+			'value' => $wpkct_profile,
 		),
 	),
 );
 
-$wpkcs_query = new WP_Query( $wpkcs_args );
+$wpkct_query = new WP_Query( $wpkct_args );
 ?>
 
 <div class="wpkcs-profile-page">
 	<div class="wpkcs-profile-card">
 		<div class="wpkcs-profile-avatar">
-			<?php if ( $wpkcs_avatar ) : ?>
+			<?php if ( $wpkct_avatar ) : ?>
 				<img
-					src="<?php echo esc_url( $wpkcs_avatar ); ?>"
-					alt="<?php echo esc_attr( $wpkcs_profile ); ?>"
+					src="<?php echo esc_url( $wpkct_avatar ); ?>"
+					alt="<?php echo esc_attr( $wpkct_profile ); ?>"
 				>
 			<?php else : ?>
 				<div class="wpkcs-avatar-placeholder">
-					<?php echo esc_html( strtoupper( substr( $wpkcs_profile, 0, 1 ) ) ); ?>
+					<?php echo esc_html( strtoupper( substr( $wpkct_profile, 0, 1 ) ) ); ?>
 				</div>
 			<?php endif; ?>
 		</div>
 		<div class="wpkcs-profile-content">
 			<h1 class="wpkcs-profile-name">
-				<?php echo esc_html( $wpkcs_profile ); ?>
+				<?php echo esc_html( $wpkct_profile ); ?>
 			</h1>
 			<div class="wpkcs-profile-role">
 				<?php esc_html_e( 'WordPress Contributor', 'contributors-team' ); ?>
 			</div>
 			<div class="wpkcs-profile-bio">
-				<?php echo wp_kses_post( wpautop( $wpkcs_bio ) ); ?>
+				<?php echo wp_kses_post( wpautop( $wpkct_bio ) ); ?>
 			</div>
 		</div>
 	</div>
@@ -93,33 +93,33 @@ $wpkcs_query = new WP_Query( $wpkcs_args );
 		<h2 class="wpkcs-section-title">
 			<?php esc_html_e( 'Contributions', 'contributors-team' ); ?>
 		</h2>
-		<?php if ( $wpkcs_query->have_posts() ) : ?>
+		<?php if ( $wpkct_query->have_posts() ) : ?>
 			<div class="wpkcs-timeline">
 				<?php
-				while ( $wpkcs_query->have_posts() ) :
-					$wpkcs_query->the_post();
+				while ( $wpkct_query->have_posts() ) :
+					$wpkct_query->the_post();
 
-					$wpkcs_type = get_post_meta(
+					$wpkct_type = get_post_meta(
 						get_the_ID(),
-						'_wpkcs_type',
+						'_wpkct_type',
 						true
 					);
 
-					$wpkcs_link = get_post_meta(
+					$wpkct_link = get_post_meta(
 						get_the_ID(),
-						'_wpkcs_link',
+						'_wpkct_link',
 						true
 					);
 
-					$wpkcs_time = get_post_meta(
+					$wpkct_time = get_post_meta(
 						get_the_ID(),
-						'_wpkcs_time_spent',
+						'_wpkct_time_spent',
 						true
 					);
 
-					$wpkcs_date = get_post_meta(
+					$wpkct_date = get_post_meta(
 						get_the_ID(),
-						'_wpkcs_date',
+						'_wpkct_date',
 						true
 					);
 					?>
@@ -128,10 +128,10 @@ $wpkcs_query = new WP_Query( $wpkcs_args );
 						<div class="wpkcs-timeline-card">
 							<div class="wpkcs-timeline-header">
 								<span class="wpkcs-contribution-type">
-									<?php echo esc_html( $wpkcs_type ); ?>
+									<?php echo esc_html( $wpkct_type ); ?>
 								</span>
 								<span class="wpkcs-contribution-date">
-									<?php echo esc_html( date_i18n( 'F j, Y', strtotime( $wpkcs_date ) ) ); ?>
+									<?php echo esc_html( date_i18n( 'F j, Y', strtotime( $wpkct_date ) ) ); ?>
 								</span>
 							</div>
 							<h3 class="wpkcs-contribution-title">
@@ -142,11 +142,11 @@ $wpkcs_query = new WP_Query( $wpkcs_args );
 							</div>
 							<div class="wpkcs-contribution-footer">
 								<span class="wpkcs-time-spent">
-									⏱ <?php echo esc_html( $wpkcs_time ); ?>
+									⏱ <?php echo esc_html( $wpkct_time ); ?>
 								</span>
-								<?php if ( $wpkcs_link ) : ?>
+								<?php if ( $wpkct_link ) : ?>
 									<a
-										href="<?php echo esc_url( $wpkcs_link ); ?>"
+										href="<?php echo esc_url( $wpkct_link ); ?>"
 										target="_blank"
 										rel="noopener noreferrer"
 										class="wpkcs-view-link"

@@ -15,13 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package Contributors_Team
  */
-class WPKCS_Assets {
+class WPKCT_Assets {
 
 	/**
 	 * Initializes the asset-related hooks.
 	 */
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'wpkcs_enqueue_assets' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'wpkct_enqueue_assets' ) );
 	}
 
 	/**
@@ -29,20 +29,20 @@ class WPKCS_Assets {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_enqueue_assets() {
+	public function wpkct_enqueue_assets() {
 
 		wp_enqueue_style(
 			'wpkcs-style',
-			WPKCS_PLUGIN_URL . 'assets/css/wpkcs-style.css',
+			WPKCT_PLUGIN_URL . 'assets/css/wpkcs-style.css',
 			array(),
-			WPKCS_VERSION
+			WPKCT_VERSION
 		);
 
 		wp_enqueue_script(
 			'wpkcs-script',
-			WPKCS_PLUGIN_URL . 'assets/js/wpkcs-script.js',
+			WPKCT_PLUGIN_URL . 'assets/js/wpkcs-script.js',
 			array( 'jquery' ),
-			WPKCS_VERSION,
+			WPKCT_VERSION,
 			true
 		);
 	}

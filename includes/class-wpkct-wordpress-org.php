@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package Contributors_Team
  */
-class WPKCS_WordPress_Org {
+class WPKCT_WordPress_Org {
 
 	/**
 	 * Fetches a WordPress.org contributor profile.
@@ -30,12 +30,12 @@ class WPKCS_WordPress_Org {
 	 * @return array|bool Profile data on success, or true if the profile
 	 *                already exists; false on failure.
 	 */
-	public static function wpkcs_fetch_profile( $username ) {
+	public static function wpkct_fetch_profile( $username ) {
 
 		// Check whether the contributor profile already exists locally.
 		$existing_query = new WP_Query(
 			array(
-				'post_type'              => 'wpkcs_contributor',
+				'post_type'              => 'wpkct_contributor',
 				'post_status'            => 'any',
 				's'                      => $username,
 				'posts_per_page'         => -1,
@@ -85,7 +85,7 @@ class WPKCS_WordPress_Org {
 		// Create a contributor profile post using the retrieved profile data.
 		$id = wp_insert_post(
 			array(
-				'post_type'    => 'wpkcs_contributor',
+				'post_type'    => 'wpkct_contributor',
 				'post_status'  => 'publish',
 				'post_title'   => sanitize_text_field( $username ),
 				'post_content' => wp_kses_post( $body['description'] ?? '' ),
@@ -117,12 +117,12 @@ class WPKCS_WordPress_Org {
 		foreach ( $body as $key => $value ) {
 			update_post_meta(
 				$id,
-				'_wpkcs_org_' . sanitize_key( $key ),
+				'_wpkct_org_' . sanitize_key( $key ),
 				$value
 			);
 		}
 
-		$contributor = new WPKCS_Contributor( $id );
+		$contributor = new WPKCT_Contributor( $id );
 
 		$avatar_url = $contributor->get_avatar();
 

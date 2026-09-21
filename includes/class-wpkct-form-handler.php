@@ -15,13 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package Contributors_Team
  */
-class WPKCS_Form_Handler {
+class WPKCT_Form_Handler {
 
 	/**
 	 * Initializes the form submission handler.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'wpkcs_handle_form_submission' ) );
+		add_action( 'init', array( $this, 'wpkct_handle_form_submission' ) );
 	}
 
 	/**
@@ -32,10 +32,10 @@ class WPKCS_Form_Handler {
 	 *
 	 * @return void
 	 */
-	private function wpkcs_redirect_with_message( $status, $message ) {
+	private function wpkct_redirect_with_message( $status, $message ) {
 		$redirect_url = add_query_arg(
 			array(
-				'wpkcs_status' => $status,
+				'wpkct_status' => $status,
 				'message'      => $message,
 			),
 			wp_get_referer()
@@ -55,52 +55,52 @@ class WPKCS_Form_Handler {
 	 *
 	 * @return void
 	 */
-	public function wpkcs_handle_form_submission() {
-		if ( ! isset( $_POST['wpkcs_submit_form'] ) ) {
+	public function wpkct_handle_form_submission() {
+		if ( ! isset( $_POST['wpkct_submit_form'] ) ) {
 			return;
 		}
 
 		// Verify the form nonce before processing submitted data.
 		if (
-			! isset( $_POST['wpkcs_nonce'] ) ||
+			! isset( $_POST['wpkct_nonce'] ) ||
 			! wp_verify_nonce(
-				sanitize_text_field( wp_unslash( $_POST['wpkcs_nonce'] ) ),
-				'wpkcs_submit_contribution'
+				sanitize_text_field( wp_unslash( $_POST['wpkct_nonce'] ) ),
+				'wpkct_submit_contribution'
 			)
 		) {
-			$this->wpkcs_redirect_with_message(
+			$this->wpkct_redirect_with_message(
 				'error',
 				__( 'Security verification failed.', 'contributors-team' )
 			);
 		}
 
 		// Sanitize submitted form fields.
-		$name = isset( $_POST['wpkcs_name'] )
-			? sanitize_text_field( wp_unslash( $_POST['wpkcs_name'] ) )
+		$name = isset( $_POST['wpkct_name'] )
+			? sanitize_text_field( wp_unslash( $_POST['wpkct_name'] ) )
 			: '';
 
-		$username = isset( $_POST['wpkcs_wporg_username'] )
-			? sanitize_text_field( wp_unslash( $_POST['wpkcs_wporg_username'] ) )
+		$username = isset( $_POST['wpkct_wporg_username'] )
+			? sanitize_text_field( wp_unslash( $_POST['wpkct_wporg_username'] ) )
 			: '';
 
-		$type = isset( $_POST['wpkcs_contribution_type'] )
-			? sanitize_text_field( wp_unslash( $_POST['wpkcs_contribution_type'] ) )
+		$type = isset( $_POST['wpkct_contribution_type'] )
+			? sanitize_text_field( wp_unslash( $_POST['wpkct_contribution_type'] ) )
 			: '';
 
-		$link = isset( $_POST['wpkcs_contribution_link'] )
-			? esc_url_raw( wp_unslash( $_POST['wpkcs_contribution_link'] ) )
+		$link = isset( $_POST['wpkct_contribution_link'] )
+			? esc_url_raw( wp_unslash( $_POST['wpkct_contribution_link'] ) )
 			: '';
 
-		$title = isset( $_POST['wpkcs_contribution_title'] )
-			? sanitize_text_field( wp_unslash( $_POST['wpkcs_contribution_title'] ) )
+		$title = isset( $_POST['wpkct_contribution_title'] )
+			? sanitize_text_field( wp_unslash( $_POST['wpkct_contribution_title'] ) )
 			: '';
 
-		$time_spent = isset( $_POST['wpkcs_time_spent'] )
-			? sanitize_text_field( wp_unslash( $_POST['wpkcs_time_spent'] ) )
+		$time_spent = isset( $_POST['wpkct_time_spent'] )
+			? sanitize_text_field( wp_unslash( $_POST['wpkct_time_spent'] ) )
 			: '';
 
-		$date = isset( $_POST['wpkcs_date'] )
-			? sanitize_text_field( wp_unslash( $_POST['wpkcs_date'] ) )
+		$date = isset( $_POST['wpkct_date'] )
+			? sanitize_text_field( wp_unslash( $_POST['wpkct_date'] ) )
 			: '';
 
 		// Validate required fields.
@@ -111,20 +111,20 @@ class WPKCS_Form_Handler {
 			empty( $time_spent ) ||
 			empty( $date )
 		) {
-			$this->wpkcs_redirect_with_message(
+			$this->wpkct_redirect_with_message(
 				'error',
 				__( 'Please fill all required fields.', 'contributors-team' )
 			);
 		}
 
 		// Verify that the submitted WordPress.org username exists.
-		$wp_org_profile = WPKCS_WordPress_Org::wpkcs_fetch_profile( $username );
+		$wp_org_profile = WPKCT_WordPress_Org::wpkct_fetch_profile( $username );
 
 		if (
 			true !== $wp_org_profile &&
 			( ! is_array( $wp_org_profile ) || ! isset( $wp_org_profile['name'] ) )
 		) {
-			$this->wpkcs_redirect_with_message(
+			$this->wpkct_redirect_with_message(
 				'error',
 				__( 'WordPress.org profile could not be found. Please check the username.', 'contributors-team' )
 			);
@@ -133,7 +133,7 @@ class WPKCS_Form_Handler {
 		// Create the contribution as pending review.
 		$post_id = wp_insert_post(
 			array(
-				'post_type'   => 'wpkcs_contribution',
+				'post_type'   => 'wpkct_contribution',
 				'post_status' => 'pending',
 				'post_title'  => $name . ' - ' . $type,
 			),
@@ -141,40 +141,40 @@ class WPKCS_Form_Handler {
 		);
 
 		if ( is_wp_error( $post_id ) ) {
-			$this->wpkcs_redirect_with_message(
+			$this->wpkct_redirect_with_message(
 				'error',
 				$post_id->get_error_message()
 			);
 		}
 
 		// Store the contribution metadata.
-		update_post_meta( $post_id, '_wpkcs_username', $username );
-		update_post_meta( $post_id, '_wpkcs_type', $type );
-		update_post_meta( $post_id, '_wpkcs_link', $link );
-		update_post_meta( $post_id, '_wpkcs_title', $title );
-		update_post_meta( $post_id, '_wpkcs_time_spent', $time_spent );
-		update_post_meta( $post_id, '_wpkcs_date', $date );
+		update_post_meta( $post_id, '_wpkct_username', $username );
+		update_post_meta( $post_id, '_wpkct_type', $type );
+		update_post_meta( $post_id, '_wpkct_link', $link );
+		update_post_meta( $post_id, '_wpkct_title', $title );
+		update_post_meta( $post_id, '_wpkct_time_spent', $time_spent );
+		update_post_meta( $post_id, '_wpkct_date', $date );
 
 		// Process the optional contribution screenshot.
 		if (
-			isset( $_FILES['wpkcs_screenshot'] ) &&
-			is_array( $_FILES['wpkcs_screenshot'] )
+			isset( $_FILES['wpkct_screenshot'] ) &&
+			is_array( $_FILES['wpkct_screenshot'] )
 		) {
 			$uploaded_file = array(
-				'name'     => isset( $_FILES['wpkcs_screenshot']['name'] )
-					? sanitize_file_name( wp_unslash( $_FILES['wpkcs_screenshot']['name'] ) )
+				'name'     => isset( $_FILES['wpkct_screenshot']['name'] )
+					? sanitize_file_name( wp_unslash( $_FILES['wpkct_screenshot']['name'] ) )
 					: '',
-				'type'     => isset( $_FILES['wpkcs_screenshot']['type'] )
-					? sanitize_text_field( wp_unslash( $_FILES['wpkcs_screenshot']['type'] ) )
+				'type'     => isset( $_FILES['wpkct_screenshot']['type'] )
+					? sanitize_text_field( wp_unslash( $_FILES['wpkct_screenshot']['type'] ) )
 					: '',
-				'tmp_name' => isset( $_FILES['wpkcs_screenshot']['tmp_name'] )
-					? sanitize_text_field( wp_unslash( $_FILES['wpkcs_screenshot']['tmp_name'] ) )
+				'tmp_name' => isset( $_FILES['wpkct_screenshot']['tmp_name'] )
+					? sanitize_text_field( wp_unslash( $_FILES['wpkct_screenshot']['tmp_name'] ) )
 					: '',
-				'error'    => isset( $_FILES['wpkcs_screenshot']['error'] )
-					? absint( $_FILES['wpkcs_screenshot']['error'] )
+				'error'    => isset( $_FILES['wpkct_screenshot']['error'] )
+					? absint( $_FILES['wpkct_screenshot']['error'] )
 					: UPLOAD_ERR_NO_FILE,
-				'size'     => isset( $_FILES['wpkcs_screenshot']['size'] )
-					? absint( $_FILES['wpkcs_screenshot']['size'] )
+				'size'     => isset( $_FILES['wpkct_screenshot']['size'] )
+					? absint( $_FILES['wpkct_screenshot']['size'] )
 					: 0,
 			);
 
@@ -197,7 +197,7 @@ class WPKCS_Form_Handler {
 
 				// Validate the uploaded screenshot file type.
 				if ( ! in_array( $file_type['ext'], $allowed_types, true ) ) {
-					$this->wpkcs_redirect_with_message(
+					$this->wpkct_redirect_with_message(
 						'error',
 						__( 'Invalid file type.', 'contributors-team' )
 					);
@@ -210,7 +210,7 @@ class WPKCS_Form_Handler {
 				);
 
 				if ( is_wp_error( $attachment_id ) ) {
-					$this->wpkcs_redirect_with_message(
+					$this->wpkct_redirect_with_message(
 						'error',
 						$attachment_id->get_error_message()
 					);
@@ -218,17 +218,17 @@ class WPKCS_Form_Handler {
 
 				update_post_meta(
 					$post_id,
-					'_wpkcs_screenshot',
+					'_wpkct_screenshot',
 					$attachment_id
 				);
 			}
 		}
 
 		// Notify the site administrator about the new contribution.
-		WPKCS_Mailer::wpkcs_send_admin_email( $post_id );
+		WPKCT_Mailer::wpkct_send_admin_email( $post_id );
 
 		// Redirect the contributor after successful submission.
-		$this->wpkcs_redirect_with_message(
+		$this->wpkct_redirect_with_message(
 			'success',
 			__( 'Contribution submitted successfully and is pending review.', 'contributors-team' )
 		);

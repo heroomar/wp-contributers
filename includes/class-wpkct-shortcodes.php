@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package Contributors_Team
  */
-class WPKCS_Shortcodes {
+class WPKCT_Shortcodes {
 
 	/**
 	 * Initializes the plugin shortcodes.
@@ -23,8 +23,8 @@ class WPKCS_Shortcodes {
 	public function __construct() {
 
 		add_shortcode(
-			'wpkcs_contribution_form',
-			array( $this, 'wpkcs_render_form' )
+			'wpkct_contribution_form',
+			array( $this, 'wpkct_render_form' )
 		);
 
 	}
@@ -34,11 +34,11 @@ class WPKCS_Shortcodes {
 	 *
 	 * @return string The rendered contribution form.
 	 */
-	public function wpkcs_render_form() {
+	public function wpkct_render_form() {
 
 		ob_start();
 
-		include WPKCS_PLUGIN_PATH . 'templates/contribution-form.php';
+		include WPKCT_PLUGIN_PATH . 'templates/contribution-form.php';
 
 		return ob_get_clean();
 	}
