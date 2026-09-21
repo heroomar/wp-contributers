@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Contributors Team
- * Plugin URI: https://wpkitchen.com
+ * Plugin URI: https://wpkitchen.com/contributors-team
  * Description: Contributors management and contribution tracking for WordPress communities.
  * Version: 1.0.0
  * Author: Abdul Rahman Pomy
