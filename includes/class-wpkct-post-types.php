@@ -89,7 +89,7 @@ class WPKCT_Post_Types {
 				'public'       => true,
 				'has_archive'  => true,
 				'rewrite'      => array(
-					'slug'       => 'contributors',
+					'slug'       => 'contributors-team',
 					'with_front' => false,
 				),
 				'supports'     => array( 'title', 'editor', 'thumbnail' ),
