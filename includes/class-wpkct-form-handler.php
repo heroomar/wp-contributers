@@ -155,7 +155,7 @@ class WPKCT_Form_Handler {
 		update_post_meta( $post_id, '_wpkct_time_spent', $time_spent );
 		update_post_meta( $post_id, '_wpkct_date', $date );
 
-		// Process the optional contribution screenshot.
+		// Process the optional contribution screenshot safely.
 		if (
 			isset( $_FILES['wpkct_screenshot'] ) &&
 			is_array( $_FILES['wpkct_screenshot'] )
@@ -168,7 +168,7 @@ class WPKCT_Form_Handler {
 					? sanitize_text_field( wp_unslash( $_FILES['wpkct_screenshot']['type'] ) )
 					: '',
 				'tmp_name' => isset( $_FILES['wpkct_screenshot']['tmp_name'] )
-					? sanitize_text_field( wp_unslash( $_FILES['wpkct_screenshot']['tmp_name'] ) )
+					? $_FILES['wpkct_screenshot']['tmp_name'] // <-- Keep raw tmp_name path intact!
 					: '',
 				'error'    => isset( $_FILES['wpkct_screenshot']['error'] )
 					? absint( $_FILES['wpkct_screenshot']['error'] )
@@ -180,7 +180,8 @@ class WPKCT_Form_Handler {
 
 			if (
 				UPLOAD_ERR_OK === $uploaded_file['error'] &&
-				! empty( $uploaded_file['name'] )
+				! empty( $uploaded_file['name'] ) &&
+				! empty( $uploaded_file['tmp_name'] )
 			) {
 				require_once ABSPATH . 'wp-admin/includes/file.php';
 				require_once ABSPATH . 'wp-admin/includes/media.php';

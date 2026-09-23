@@ -515,3 +515,190 @@
 	background:#229ed9;
 	border-color:#229ed9;
 }
+
+
+/* Container & Layout Form Structure */
+.wpkct-form {
+  max-width: 520px;
+  margin: 40px auto;
+  padding: 36px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.wpkct-form * {
+  box-sizing: border-box;
+}
+
+/* Base Input & Select Elements Styling */
+.wpkct-form input[type="text"],
+.wpkct-form input[type="url"],
+.wpkct-form input[type="date"],
+.wpkct-form select {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #0f172a;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+/* Placeholder styling */
+.wpkct-form input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* Focus States */
+.wpkct-form input[type="text"]:focus,
+.wpkct-form input[type="url"]:focus,
+.wpkct-form input[type="date"]:focus,
+.wpkct-form select:focus {
+  background-color: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Custom Select Dropdown Arrow UI */
+.wpkct-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+/* Modern File Upload Input */
+.wpkct-form input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: #64748b;
+  background-color: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.wpkct-form input[type="file"]:hover {
+  border-color: #3b82f6;
+}
+
+.wpkct-form input[type="file"]::file-selector-button {
+  padding: 8px 14px;
+  margin-right: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1e293b;
+  background-color: #e2e8f0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.wpkct-form input[type="file"]::file-selector-button:hover {
+  background-color: #cbd5e1;
+}
+
+/* Checkbox Label Layout */
+.wpkct-form label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #475569;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wpkct-form input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  background-color: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.wpkct-form input[type="checkbox"]::before {
+  content: "";
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg) scale(0);
+  transition: transform 0.15s ease-in-out;
+}
+
+.wpkct-form input[type="checkbox"]:checked {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.wpkct-form input[type="checkbox"]:checked::before {
+  transform: rotate(-45deg) scale(1);
+}
+
+.wpkct-form input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+/* Submit Button Design */
+.wpkct-form button[type="submit"] {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  transition: all 0.2s ease-in-out;
+}
+
+.wpkct-form button[type="submit"]:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+.wpkct-form button[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+}
+
+/* Responsive adjustment for compact screens */
+@media (max-width: 480px) {
+  .wpkct-form {
+    padding: 20px;
+    margin: 15px;
+    border-radius: 12px;
+  }
+}
