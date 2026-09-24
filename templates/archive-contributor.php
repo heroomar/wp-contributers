@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-get_header();
+require WPKCT_PLUGIN_PATH . 'templates/contributor-header.php';
 ?>
 
 <h1><?php esc_html_e( 'Contributors', 'contributors-team' ); ?></h1>
@@ -101,5 +101,5 @@ get_header();
 </div>
 
 <?php
-get_footer();
+require WPKCT_PLUGIN_PATH . 'templates/contributor-footer.php';
 ?>
