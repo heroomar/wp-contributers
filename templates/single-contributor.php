@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 
-get_header();
+require WPKCT_PLUGIN_PATH . 'templates/contributor-header.php';
 
 while ( have_posts() ) :
 	the_post();
@@ -201,5 +201,5 @@ while ( have_posts() ) :
 	<?php
 endwhile;
 
-get_footer();
+require WPKCT_PLUGIN_PATH . 'templates/contributor-footer.php';
 ?>
